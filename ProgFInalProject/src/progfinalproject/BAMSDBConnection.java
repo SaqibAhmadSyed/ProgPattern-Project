@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 
 /**
  *
- * @author xsyed
+ * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class BAMSDBConnection {
     private static Connection connect;

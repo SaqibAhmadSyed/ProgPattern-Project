@@ -5,21 +5,31 @@
  */
 package progfinalproject;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 /**
  *
- * @author Saqib Ahmad Syed
+ * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class TransactionsModel {
     private int transactionId;
     private int toAccountNumber;
     private String transactiondetails;
     private int value;
+    private List<ClientsModel> clients;
 
-    public TransactionsModel(int transactionId, int toAccountNumber, String transactiondetails, int value) {
-        this.transactionId = transactionId;
-        this.toAccountNumber = toAccountNumber;
-        this.transactiondetails = transactiondetails;
-        this.value = value;
+    public TransactionsModel(ResultSet rs) {
+        try{
+        this.transactionId = rs.getInt("transactionId");
+        this.toAccountNumber = rs.getInt("toAccountNum");
+        this.transactiondetails = rs.getString("transactiondetails");
+        this.value = rs.getInt("value");
+        }catch(SQLException e){
+             System.out.println("Error creating transaction model [" + e.getMessage() + "]");
+        }
+        clients = new ArrayList<>();
     }
 
     public int getTransactionId() {
@@ -54,8 +64,20 @@ public class TransactionsModel {
         this.value = value;
     }
 
+    public List<ClientsModel> getClents(){
+        return clients;
+    }
+    
+    public void addClient(ClientsModel client){
+        clients.add(client);
+    }
+    
     @Override
     public String toString() {
-        return "Transactions{" + "transactionId=" + transactionId + ", toAccountNumber=" + toAccountNumber + ", transactiondetails=" + transactiondetails + ", value=" + value + '}';
+       String w = "Transactions=" + transactionId + ", toAccountNumber=" + toAccountNumber + ", transactiondetails=" + transactiondetails + ", value=" + value + '}';
+       for(ClientsModel c: clients){
+           w+="\n   "+w.toString();
+       }
+       return w;
     }
 }

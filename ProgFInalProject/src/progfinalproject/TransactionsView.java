@@ -9,14 +9,14 @@ import java.util.Map;
 
 /**
  *
- * @author xsyed
+ * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class TransactionsView {
-    public void printBooksTable(Map map) {
+    public void printTransactionsTable(Map map) {
         System.out.println(map);
     }
 
-    public void printBooks(TransactionsModel b) {
-        System.out.println(b);
+    public void printTransactions(TransactionsModel tm) {
+        System.out.println(tm);
     }
 }

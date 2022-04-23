@@ -9,14 +9,14 @@ import java.util.Map;
 
 /**
  *
- * @author xsyed
+ * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class ClientsView {
-    public void printBooksTable(Map map) {
+    public void printClientsTable(Map map) {
         System.out.println(map);
     }
 
-    public void printBooks(ClientsModel b) {
-        System.out.println(b);
+    public void printClients(ClientsModel cm) {
+        System.out.println(cm);
     }
 }

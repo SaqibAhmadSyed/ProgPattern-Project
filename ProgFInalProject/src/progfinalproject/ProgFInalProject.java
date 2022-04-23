@@ -7,7 +7,7 @@ package progfinalproject;
 
 /**
  *
- * @author xsyed
+ * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class ProgFInalProject {
 

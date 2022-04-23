@@ -5,9 +5,11 @@
  */
 package progfinalproject;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 /**
  *
- * @author Saqib Ahmad Syed
+ * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class ClientsModel {
     private int clientId;
@@ -16,12 +18,16 @@ public class ClientsModel {
     private String identification;
     private String address;
 
-    public ClientsModel(int clientId, String firstName, String lastName, String identification, String address) {
-        this.clientId = clientId;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.identification = identification;
-        this.address = address;
+    public ClientsModel(ResultSet rs) {
+        try{
+            this.clientId = rs.getInt("clientId");
+            this.firstName = rs.getString("firstName");
+            this.lastName = rs.getString("lastName");
+            this.identification = rs.getString("identification");
+            this.address = rs.getString("address");
+        }catch(SQLException e){
+            System.out.println("Error creating clients model [" + e.getMessage() + "]");
+        }
     }
 
     public int getClientId() {
@@ -66,7 +72,7 @@ public class ClientsModel {
 
     @Override
     public String toString() {
-        return "Clients{" + "clientId=" + clientId + ", firstName=" + firstName + ", lastName=" + lastName + ", identification=" + identification + ", address=" + address + '}';
+        return "Clients=" + "clientId=" + clientId + ", First Name=" + firstName + ", Last Name=" + lastName + ", Identification=" + identification + ", Address=" + address;
     }
     
 }
