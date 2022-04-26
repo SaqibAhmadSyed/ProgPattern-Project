@@ -3,20 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package progfinalproject;
+package progfinalproject.views;
 
+import progfinalproject.models.ClientsModel;
 import java.util.Map;
 
 /**
  *
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
-public class AccountsView {
-    public void printAccountsTable(Map map) {
+public class ClientsView {
+    public void printClientsTable(Map map) {
         System.out.println(map);
     }
 
-    public void printAccounts(AccountsModel am) {
-        System.out.println(am);
+    public void printClients(ClientsModel cm) {
+        System.out.println(cm);
     }
 }
