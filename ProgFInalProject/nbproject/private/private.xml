@@ -3,13 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/BAMSController.java</file>
-            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/TransactionsModel.java</file>
-            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/ProgFInalProject.java</file>
-            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/ClientsView.java</file>
-            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/BAMSDBConnection.java</file>
-            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/ClientsModel.java</file>
-            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/TransactionsView.java</file>
+            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/views/ClientsView.java</file>
+            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/dbhelper/BAMSDBConnection.java</file>
+            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/views/TransactionsView.java</file>
+            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/models/TransactionsModel.java</file>
+            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/models/AccountsModel.java</file>
+            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/views/AccountsView.java</file>
+            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/models/ClientsModel.java</file>
+            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/controller/BAMSController.java</file>
+            <file>file:/C:/Users/darth/OneDrive/Documents/GitHub/ProgPattern-Project/ProgFInalProject/src/progfinalproject/MainController.java</file>
         </group>
     </open-files>
 </project-private>

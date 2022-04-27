@@ -115,6 +115,18 @@ public class BAMSController {
         System.out.println("Client Added");
     }
     
+    /**
+     * Creates Teller table
+     * @throws Exception 
+     */
+    public void createTellerTable() throws Exception {
+        Statement stmt = con.createStatement();
+        String query = "CREATE TABLE TELLER";
+        
+        stmt.executeUpdate("DROP TABLE if exists TELLER;");
+        stmt.executeUpdate(query);
+        System.out.println("Table TELLER created...");
+    }
    //INSERT STATEMENTS THAT MAY BE USED LATER ON
     /*
     INSERT INTO CLIENTS ( clientId, firstName,  lastName, identification, address) VALUES (1, 'Max',    'Johnson', 'passport', '5th avenue');
