@@ -19,7 +19,7 @@ public class AccountsModel {
     private String accType;
     private String openDate;
     private int balance;
-    private boolean IsActive;
+    private boolean isActive;
     private List<ClientsModel> clients;
 
     public AccountsModel(ResultSet rs) {
@@ -29,7 +29,7 @@ public class AccountsModel {
             this.accType = rs.getString("accType");
             this.openDate = rs.getString("openDate");
             this.balance = rs.getInt("balance");
-            this.IsActive = rs.getBoolean("IsActive");
+            this.isActive = rs.getBoolean("IsActive");
         }catch(SQLException e){
             System.out.println("Error creating accounts model [" + e.getMessage() + "]");
         }
@@ -76,12 +76,12 @@ public class AccountsModel {
         this.balance = balance;
     }
 
-    public boolean isIsActive() {
-        return IsActive;
+    public boolean getIsActive() {
+        return isActive;
     }
 
-    public void setIsActive(boolean IsActive) {
-        this.IsActive = IsActive;
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     public List<ClientsModel> getClents(){ return clients; }
@@ -90,7 +90,7 @@ public class AccountsModel {
 
     @Override
     public String toString() {
-        String w = "AccountsModel=" + "accountNum=" + accountNum + ", clientId=" + clientId + ", accType=" + accType + ", openDate=" + openDate + ", balance=" + balance + ", IsActive=" + IsActive + '}';
+        String w = "AccountsModel=" + "accountNum=" + accountNum + ", clientId=" + clientId + ", accType=" + accType + ", openDate=" + openDate + ", balance=" + balance + ", IsActive=" + isActive + '}';
         for(ClientsModel c: clients){
             w+="\n   "+w.toString();
         }

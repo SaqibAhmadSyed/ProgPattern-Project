@@ -1,27 +1,40 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package progfinalproject.dbhelper;
 
+import progfinalproject.Interfaces.Clients;
 import progfinalproject.models.ClientsModel;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
         
 /**
  *
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
-public class ClientsDAO {
-    
-    public ClientsModel getClients(int id){
-       try {
-            Connection con = BAMSDBConnection.createConnection();
-            PreparedStatement stm  
-                    = con.prepareStatement("SELECT clientId, firstName,  lastName, identification, address FROM clients WHERE id=?");
-            stm.setInt(0, id);
+public class ClientsDAO implements Clients {
+    public boolean createClient(int id, String fName, String lName, String identification, String address) {
+        try {
+            Connection con = BAMSDBConnection.getSingleBAMSCon();
+            String query = "INSERT INTO CLIENTS (FIRSTNAME, LASTNAME, IDENTIFICATION, ADDRESS)" +
+                    "VALUES (?,?,?,?,?)";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, id);
+            stmt.setString(2, fName);
+            stmt.setString(3, lName);
+            stmt.setString(4, identification);
+            stmt.setString(5, address);
+            stmt.executeUpdate();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
+            return false;
+        }
+    }
+
+    public ClientsModel readClients(int id) {
+        try {
+            Connection con = BAMSDBConnection.getSingleBAMSCon();
+            PreparedStatement stm
+                    = con.prepareStatement("SELECT CLIENTID, FIRSTNAME, LASTNAME, IDENTIFICATION, ADDRESS FROM CLIENTS WHERE CLIENTID=?");
+            stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
                 return new ClientsModel(rs);
@@ -32,26 +45,27 @@ public class ClientsDAO {
         }
         return null;
     }
-    
-    public static boolean saveOrUpdate(ClientsModel c) {
+
+    public boolean updateClient(ClientsModel c) {
         if (c==null) {
             return false;
         }
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
-            PreparedStatement stm  
-                    = con.prepareStatement("INSERT INTO clients (clientId, firstName,  lastName, identification, address) VALUES (?, ?, ?, ?) " +
-                    " ON CONFLICT (id) DO UPDATE SET firstName=?, lastName=?, identification=? ");
+            PreparedStatement stm
+                    = con.prepareStatement("INSERT INTO CLIENTS (CLIENTID, FIRSTNAME,  LASTNAME, IDENTIFICATION, ADDRESS) VALUES (?, ?, ?, ?, ?) " +
+                    " ON CONFLICT (CLIENTID) DO UPDATE SET FIRSTNAME=?, LASTNAME=?, IDENTIFICATION=? ");
             stm.setInt(1, c.getClientId());
             stm.setString(2, c.getFirstName());
             stm.setString(3, c.getLastName());
             stm.setString(4, c.getIdentification());
-            
+            stm.setString(5, c.getAddress());
+
             stm.executeUpdate();
             return true;
         } catch(Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
         }
-        return false;        
+        return false;
     }
 }

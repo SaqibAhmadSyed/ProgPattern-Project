@@ -7,7 +7,6 @@ package progfinalproject.dbhelper;
 
 import java.sql.*;
 import progfinalproject.models.*;
-import progfinalproject.dbhelper.*;
 /**
  *
  * @author xsyed

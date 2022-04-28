@@ -44,7 +44,7 @@ public class BAMSController {
     
     /**
      * Creates the Clients table
-     * @throws Exception 
+     * @throws Exception creates exception message if database failed to be created
      */
     public void createClientsTable() throws Exception {
         Statement stmt = con.createStatement();
@@ -62,12 +62,12 @@ public class BAMSController {
     
     /**
      * Creates the Transactions table
-     * @throws Exception 
+     * @throws Exception creates exception message if database failed to be created
      */
     public void createTransactionsTable() throws Exception {
         Statement stmt = con.createStatement();
         String query = "CREATE TABLE TRANSACTIONS"
-                + "(TRANSACTIONID       INT  PRIMARY KEY    NOT NULL,"
+                + "(TRANSACTIONID       INT  PRIMARY KEY    AUTOINCREMENT,"
                 + "TOACCOUNTNUM         INT                 NOT NULL,"
                 + "FROMACCOUNTNUM       INT                 NOT NULL,"
                 + "TRANSACTIONDETAIL    TEXT                NOT NULL,"
@@ -80,12 +80,12 @@ public class BAMSController {
     
     /**
      * Creates Accounts table
-     * @throws Exception 
+     * @throws Exception creates exception message if database failed to be created
      */
     public void createAccountsTable() throws Exception {
         Statement stmt = con.createStatement();
         String query = "CREATE TABLE ACCOUNTS"
-                + "(ACCOUNTNUM          INT  PRIMARY KEY    AUTOINCREMENT,"
+                + "(ACCOUNTNUM          INT  PRIMARY KEY    NOT NULL,"
                 + "OPENDATE             TEXT                NOT NULL,"
                 + "BALANCE              INT                 NOT NULL,"
                 + "ISACTIVE             BIT                 NOT NULL,"
@@ -102,7 +102,7 @@ public class BAMSController {
     /**
      * Adds a client in a database
      * @param c Client Model object
-     * @throws Exception 
+     * @throws Exception creates exception message if database is inaccessible
      */
     public void addClients(ClientsModel c) throws Exception {
         Statement stmt = con.createStatement();
