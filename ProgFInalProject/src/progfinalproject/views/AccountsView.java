@@ -13,7 +13,7 @@ import java.util.Map;
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class AccountsView {
-    public void printAccountsTable(Map map) {
+    public void printAccountsTable(Map<Integer, String> map) {
         System.out.println(map);
     }
 

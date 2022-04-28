@@ -1,5 +1,7 @@
 package progfinalproject.Interfaces;
 
+import java.util.Map;
+
 import progfinalproject.models.ClientsModel;
 
 public interface Clients {
@@ -14,7 +16,7 @@ public interface Clients {
      * @param address cilent address
      * @return true if query has been executed
      */
-    public boolean createClient(int id, String fName, String lName, String identification, String address) throws Exception;
+    public void createClient(int id, String fName, String lName, String identification, String address) throws Exception;
 
     /**
      * Displays the database of a selected client
@@ -24,9 +26,20 @@ public interface Clients {
     public ClientsModel readClients(int  id);
 
     /**
-     * Updates the information of the client
-     * @param client model object
-     * @return true if query is successful
+     * Updates the information of the client identification
+     * @param identification client identification
      */
-    public boolean updateClient(ClientsModel client);
+    public void updateClientIdentification(int id, String identification);
+
+    /**
+     * Updates the information of the client address
+     * @param identification client address
+     */
+    public void updateClientAddress(int id, String addres);
+    
+    /**
+     * Prints out all the client database from a map
+     * @return a map of all the clients
+     */
+    public Map<Integer, String> readAllClients();
 }

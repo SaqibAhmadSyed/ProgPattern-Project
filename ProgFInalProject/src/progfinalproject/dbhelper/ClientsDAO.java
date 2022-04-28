@@ -3,17 +3,24 @@ package progfinalproject.dbhelper;
 
 import progfinalproject.Interfaces.Clients;
 import progfinalproject.models.ClientsModel;
+
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
         
 /**
  *
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class ClientsDAO implements Clients {
-    public boolean createClient(int id, String fName, String lName, String identification, String address) {
+    
+    public ClientsDAO() {
+        
+    }
+    public void createClient(int id, String fName, String lName, String identification, String address) {
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
-            String query = "INSERT INTO CLIENTS (FIRSTNAME, LASTNAME, IDENTIFICATION, ADDRESS)" +
+            String query = "INSERT INTO CLIENTS (CLIENTID, FIRSTNAME, LASTNAME, IDENTIFICATION, ADDRESS)" +
                     "VALUES (?,?,?,?,?)";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setInt(1, id);
@@ -22,10 +29,8 @@ public class ClientsDAO implements Clients {
             stmt.setString(4, identification);
             stmt.setString(5, address);
             stmt.executeUpdate();
-            return true;
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
-            return false;
         }
     }
 
@@ -45,27 +50,51 @@ public class ClientsDAO implements Clients {
         }
         return null;
     }
-
-    public boolean updateClient(ClientsModel c) {
-        if (c==null) {
-            return false;
-        }
+    
+    public void updateClientIdentification(int id, String identification) {
+        
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
-            PreparedStatement stm
-                    = con.prepareStatement("INSERT INTO CLIENTS (CLIENTID, FIRSTNAME,  LASTNAME, IDENTIFICATION, ADDRESS) VALUES (?, ?, ?, ?, ?) " +
-                    " ON CONFLICT (CLIENTID) DO UPDATE SET FIRSTNAME=?, LASTNAME=?, IDENTIFICATION=? ");
-            stm.setInt(1, c.getClientId());
-            stm.setString(2, c.getFirstName());
-            stm.setString(3, c.getLastName());
-            stm.setString(4, c.getIdentification());
-            stm.setString(5, c.getAddress());
-
-            stm.executeUpdate();
-            return true;
-        } catch(Exception e) {
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("UPDATE CLIENTS SET IDENTIFICATION='" + identification + "';");
+            System.out.println("Update Successful!");
+        } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
         }
-        return false;
+    }
+
+    public void updateClientAddress(int id, String address) {
+        
+        try {
+            Connection con = BAMSDBConnection.getSingleBAMSCon();
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate("UPDATE CLIENTS SET ADDRESS='" + address + "';");
+            System.out.println("Update Successful!");
+        } catch (Exception e) {
+            System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
+        }
+    }
+    
+    public Map<Integer, String> readAllClients(){
+        Map<Integer, String> clientMap = new HashMap<>();
+
+        try {
+            Connection con = BAMSDBConnection.getSingleBAMSCon();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM CLIENTS");
+            
+            while (rs.next()) {
+                int id = rs.getInt("CLIENTID");
+                String fName = rs.getString("FIRSTNAME");
+                String lName = rs.getString("LASTNAME");
+                String identification = rs.getString("IDENTIFICATION");
+                String address = rs.getString("ADDRESS");
+
+                clientMap.put(id, fName + lName + identification + address + "\n");
+            }
+        } catch (Exception e) { 
+            System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
+        }
+        return clientMap;
     }
 }

@@ -41,12 +41,16 @@ public class BAMSController {
         this.tview = tview;
         con = BAMSDBConnection.getSingleBAMSCon();
     }
+
+    public BAMSController() {
+    }
     
     /**
      * Creates the Clients table
      * @throws Exception creates exception message if database failed to be created
      */
     public void createClientsTable() throws Exception {
+        Connection con = BAMSDBConnection.getSingleBAMSCon();
         Statement stmt = con.createStatement();
         String query = "CREATE TABLE CLIENTS"
                 + "(CLIENTID       INT  PRIMARY KEY    NOT NULL,"

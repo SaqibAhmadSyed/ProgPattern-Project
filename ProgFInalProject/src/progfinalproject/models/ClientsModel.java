@@ -7,6 +7,8 @@ package progfinalproject.models;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import progfinalproject.Interfaces.Clients;
 /**
  *
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
@@ -28,6 +30,14 @@ public class ClientsModel {
         }catch(SQLException e){
             System.out.println("Error creating clients model [" + e.getMessage() + "]");
         }
+    }
+
+    public ClientsModel(int clientId, String firstName, String lastName, String identification, String address) {
+        this.clientId = clientId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.identification = identification;
+        this.address = address;
     }
 
     public int getClientId() {
