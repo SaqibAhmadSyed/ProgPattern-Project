@@ -24,6 +24,7 @@ public class MainController {
     /**
      * @param args the command line arguments
      */
+
     public static void main(String[] args) throws Exception{
         BAMSController controller = new BAMSController();
         ClientsDAO cDAO = new ClientsDAO();
@@ -40,5 +41,6 @@ public class MainController {
     for (Entry<Integer, String> entry : map.entrySet()) {
         System.out.println(entry.getKey() + " = " + entry.getValue());
     }
+
     }
 }
