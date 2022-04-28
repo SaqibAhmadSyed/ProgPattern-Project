@@ -3,21 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package progfinalproject;
+package progfinalproject.dbhelper;
 
 import java.sql.*;
+import progfinalproject.models.*;
+import progfinalproject.dbhelper.*;
 /**
  *
  * @author xsyed
  */
 public class TransactionDAO {
-    
-    /**
-     * gets all the transaction from the selected transaction id
-     * @param id transaction id
-     * @return
-     * @throws Exception when data not found in db
-     */
+
     public static TransactionsModel getTransaction(int id) throws Exception{
         Connection c = BAMSDBConnection.getSingleBAMSCon();
         String sql = "SELECT TRANSACTIONID, TOACCOUNTUNM, FROMACCOUNTNUM,"
@@ -33,8 +29,7 @@ public class TransactionDAO {
         }
     }
     
-    public static boolean saveOrUpdateTransactions
-    (TransactionsModel transaction) throws Exception{
+    public static boolean saveOrUpdateTransactions (TransactionsModel transaction) throws Exception{
         if (transaction == null) {
             return true;
         }
@@ -44,7 +39,7 @@ public class TransactionDAO {
                 + " VALUES (?, ?, ?, ?, ?))"
                 + "ON CONFLICT(TRANSACTIONID) DO UPDATE SET"
                 + "TOACCOUNTNUM=?, FROMACCOUNTNUM=? TRANSACTIONDETAIL=?,"
-                + " VALUE=?";
+                + " VALUE=?;";
         
         PreparedStatement stmt = c.prepareStatement(sql);
         stmt.setInt(1, transaction.getTransactionId());
@@ -54,9 +49,5 @@ public class TransactionDAO {
         stmt.setInt(5, transaction.getValue());
         stmt.executeUpdate();
         return true;
-    }
-    
-    public static boolean deleteTransaction() {
-        
     }
 }

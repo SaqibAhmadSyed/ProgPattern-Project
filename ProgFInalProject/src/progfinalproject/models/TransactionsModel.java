@@ -17,6 +17,7 @@ import java.util.List;
 public class TransactionsModel {
     private int transactionId;
     private int toAccountNumber;
+    private int fromAccountNumber;
     private String transactiondetails;
     private int value;
     private List<ClientsModel> clients;
@@ -25,6 +26,7 @@ public class TransactionsModel {
         try{
         this.transactionId = rs.getInt("transactionId");
         this.toAccountNumber = rs.getInt("toAccountNum");
+        this.fromAccountNumber = rs.getInt("fromAccountNum");
         this.transactiondetails = rs.getString("transactiondetails");
         this.value = rs.getInt("value");
         }catch(SQLException e){
@@ -48,6 +50,13 @@ public class TransactionsModel {
     public void setToAccountNumber(int toAccountNumber) {
         this.toAccountNumber = toAccountNumber;
     }
+    public int getFromAccountNumber() {
+        return fromAccountNumber;
+    }
+
+    public void fromToAccountNumber(int fromAccountNumber) {
+        this.fromAccountNumber = toAccountNumber;
+    }
 
     public String getTransactiondetails() {
         return transactiondetails;
@@ -68,7 +77,7 @@ public class TransactionsModel {
     public List<ClientsModel> getClents(){
         return clients;
     }
-    
+
     public void addClient(ClientsModel client){
         clients.add(client);
     }

@@ -20,6 +20,7 @@ public class AccountsModel {
     private String openDate;
     private int balance;
     private boolean IsActive;
+    private List<ClientsModel> clients;
 
     public AccountsModel(ResultSet rs) {
         try{
@@ -32,6 +33,7 @@ public class AccountsModel {
         }catch(SQLException e){
             System.out.println("Error creating accounts model [" + e.getMessage() + "]");
         }
+        clients = new ArrayList<>();
     }
 
     public int getAccountNum() {
@@ -82,9 +84,17 @@ public class AccountsModel {
         this.IsActive = IsActive;
     }
 
+    public List<ClientsModel> getClents(){ return clients; }
+
+    public void addClient(ClientsModel client){ clients.add(client); }
+
     @Override
     public String toString() {
-        return "AccountsModel=" + "accountNum=" + accountNum + ", clientId=" + clientId + ", accType=" + accType + ", openDate=" + openDate + ", balance=" + balance + ", IsActive=" + IsActive + '}';
+        String w = "AccountsModel=" + "accountNum=" + accountNum + ", clientId=" + clientId + ", accType=" + accType + ", openDate=" + openDate + ", balance=" + balance + ", IsActive=" + IsActive + '}';
+        for(ClientsModel c: clients){
+            w+="\n   "+w.toString();
+        }
+        return w;
     }
     
 }
