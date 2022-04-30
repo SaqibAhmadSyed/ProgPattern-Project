@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 public class AccountsDAO {
-    public void createAccount(int cId, String accountType) {
+    public boolean createAccount(int cId, String accountType) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy"); //formatted date
         LocalDate localDate = LocalDate.now();
         String dateString = dtf.format(localDate);
@@ -29,9 +29,10 @@ public class AccountsDAO {
             pstmt.setBoolean(5, true); //default is true because account is active
             pstmt.executeUpdate();
             System.out.println("Account successfuly created");
-
+            return true;
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
+            return false;
         }
     }
 
@@ -54,6 +55,7 @@ public class AccountsDAO {
                 }
             } else {
                 System.out.println("id does not exist");
+                return null;
             }
             return null;
         } catch(Exception e) {
@@ -62,7 +64,7 @@ public class AccountsDAO {
         return null;
     }
 
-    public void deactivateAccount(int id) {
+    public boolean deactivateAccount(int id) {
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
             Statement stmt = con.createStatement();
@@ -75,16 +77,19 @@ public class AccountsDAO {
                 } else {
                     stmt.executeUpdate("UPDATE ACCOUNTS SET ISACTIVE='FALSE'");
                     System.out.println("successfuly deactivated");
+                    return true;
                 }
             } else {
                 System.out.println("id does not exist");
+                return false;
             }
         } catch(Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
         }
+        return false;
     }
 
-    public void addBalance(int id, double depositAmount) {
+    public boolean addBalance(int id, double depositAmount) {
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
             Statement stmt = con.createStatement();
@@ -95,13 +100,16 @@ public class AccountsDAO {
                 double newAmount =  readAccount(id).getBalance() + depositAmount;
                 stmt.executeUpdate("UPDATE ACCOUNTS SET BALANCE=" + newAmount + " WHERE ACCOUNTID=" + id);
                 System.out.println("Successfully added " + depositAmount + "$ in your account");
+                return true;
             } else {
                 System.out.println("id does not exist");
+                return false;
             }
 
         } catch(Exception e) {
         System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
         }
+        return false;
     }
     public List<AccountsModel> readAllAccounts() {
         List<AccountsModel> accountList = new ArrayList<>();
@@ -129,7 +137,7 @@ public class AccountsDAO {
             return accountList;
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
+            return null;
         }
-        return null;
     }
 }

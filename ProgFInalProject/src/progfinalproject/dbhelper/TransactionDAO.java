@@ -15,7 +15,7 @@ import javax.swing.plaf.nimbus.State;
 /**
  * @author xsyed
  */
-public class TransactionDAO implements Transaction {
+public class TransactionDAO {
     public boolean createTransaction(int toAccNum, int fromAccNum, String detail, double value) {
         boolean isFirstEqual = false; //checks if toAccNum exists in database
         boolean isSecondEqual = false; //checks if fromAccNum exists in database
@@ -84,7 +84,7 @@ public class TransactionDAO implements Transaction {
         return false;
     }
 
-    public void readClientTransaction(int id) {
+    public boolean readClientTransaction(int id) {
         List<TransactionsModel> transactionList = new ArrayList<>();
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
@@ -92,6 +92,10 @@ public class TransactionDAO implements Transaction {
             ResultSet rs = stmt.executeQuery("SELECT * FROM TRANSACTIONS WHERE FROMACCOUNTID=" + id);
 
             while (rs.next()) {
+                if (!rs.next()) {
+                    System.out.println("Error");
+                    return false;
+                }
                 int tId = rs.getInt("TRANSACTIONID");
                 int toAccId = rs.getInt("TOACCOUNTID");
                 int fromAccId = rs.getInt("FROMACCOUNTID");
@@ -104,9 +108,11 @@ public class TransactionDAO implements Transaction {
                     .replace("[", "")  //remove the right bracket
                     .replace("]", ""); //removes the left bracket
             System.out.println(formattedString);
+            return true;
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB [" + e.getMessage() + "]");
         }
+        return false;
     }
     public TransactionsModel readSingleTransaction(int id) {
         try {
@@ -126,15 +132,15 @@ public class TransactionDAO implements Transaction {
                 }
             } else {
                 System.out.println("id does not exist");
+                return null;
             }
-            return null;
         } catch(Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
         }
         return null;
     }
 
-    public void cancelTransaction(int id) {
+    public boolean cancelTransaction(int id) {
         int toAccId = 0;
         int fromAccId = 0;
         double currentBalance = 0.0;
@@ -158,6 +164,7 @@ public class TransactionDAO implements Transaction {
                     receiverStmt.executeUpdate("UPDATE ACCOUNTS SET BALANCE=" + total + " WHERE ACCOUNTID=" + fromAccId);
                 } else {
                     System.out.println("id does not exist");
+                    return false;
                 }
                 ResultSet senderRs = stmt.executeQuery("SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNTID=" + toAccId);
                 if (senderRs.next()) {
@@ -166,15 +173,19 @@ public class TransactionDAO implements Transaction {
                     senderStmt.executeUpdate("UPDATE ACCOUNTS SET BALANCE=" + total + " WHERE ACCOUNTID=" + toAccId);
                 } else {
                     System.out.println("id does not exist");
+                    return false;
                 }
             } else {
                 System.out.println("id does not exist");
+                return false;
             }
             stmt.executeUpdate("DELETE FROM TRANSACTIONS WHERE TRANSACTIONID=" + id);
             System.out.println("canceled transaction");
+            return true;
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB [" + e.getMessage() + "]");
         }
+        return false;
     }
 
     public List<TransactionsModel> readAllTransaction() {

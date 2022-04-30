@@ -11,12 +11,12 @@ import java.util.*;
  *
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
-public class ClientsDAO implements Clients {
+public class ClientsDAO {
     
     public ClientsDAO() {
         
     }
-    public void createClient(String fName, String lName, String identification, String address) {
+    public boolean createClient(String fName, String lName, String identification, String address) {
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
             String query = "INSERT INTO CLIENTS (FIRSTNAME, LASTNAME, IDENTIFICATION, ADDRESS)" +
@@ -28,9 +28,12 @@ public class ClientsDAO implements Clients {
             stmt.setString(4, address);
             stmt.executeUpdate();
             System.out.println("Client created successfully");
+            return true;
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
+            return false;
         }
+
     }
 
     public ClientsModel readClients(int id) {
@@ -57,27 +60,30 @@ public class ClientsDAO implements Clients {
         return null;
     }
     
-    public void updateClientIdentification(int id, String identification) {
+    public boolean updateClientIdentification(int id, String identification) {
         
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
             Statement stmt = con.createStatement();
             stmt.executeUpdate("UPDATE CLIENTS SET IDENTIFICATION='" + identification + "'" + "WHERE CLIENTID=" + id);
             System.out.println("Update Successful!");
+            return true;
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
+            return false;
         }
     }
 
-    public void updateClientAddress(int id, String address) {
-        
+    public boolean updateClientAddress(int id, String address) {
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
             Statement stmt = con.createStatement();
             stmt.executeUpdate("UPDATE CLIENTS SET ADDRESS='" + address + "'" + "WHERE CLIENTID=" + id);
             System.out.println("Update Successful!");
+            return true;
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
+            return false;
         }
     }
     
