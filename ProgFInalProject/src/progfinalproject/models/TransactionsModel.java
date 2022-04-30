@@ -1,15 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package progfinalproject.models;
 
-import progfinalproject.models.ClientsModel;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 /**
  *
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
@@ -18,21 +9,15 @@ public class TransactionsModel {
     private int transactionId;
     private int toAccountNumber;
     private int fromAccountNumber;
-    private String transactiondetails;
-    private int value;
-    private List<ClientsModel> clients;
+    private String transactionDetails;
+    private double value;
 
-    public TransactionsModel(ResultSet rs) {
-        try{
-        this.transactionId = rs.getInt("transactionId");
-        this.toAccountNumber = rs.getInt("toAccountNum");
-        this.fromAccountNumber = rs.getInt("fromAccountNum");
-        this.transactiondetails = rs.getString("transactiondetails");
-        this.value = rs.getInt("value");
-        }catch(SQLException e){
-             System.out.println("Error creating transaction model [" + e.getMessage() + "]");
-        }
-        clients = new ArrayList<>();
+    public TransactionsModel(int transactionId, int toAccountNumber, int fromAccountNumber, String transactionDetails, double value) {
+        this.transactionId = transactionId;
+        this.toAccountNumber = toAccountNumber;
+        this.fromAccountNumber = fromAccountNumber;
+        this.transactionDetails = transactionDetails;
+        this.value = value;
     }
 
     public int getTransactionId() {
@@ -50,6 +35,7 @@ public class TransactionsModel {
     public void setToAccountNumber(int toAccountNumber) {
         this.toAccountNumber = toAccountNumber;
     }
+
     public int getFromAccountNumber() {
         return fromAccountNumber;
     }
@@ -58,36 +44,26 @@ public class TransactionsModel {
         this.fromAccountNumber = toAccountNumber;
     }
 
-    public String getTransactiondetails() {
-        return transactiondetails;
+    public String getTransactionDetails() {
+        return transactionDetails;
     }
 
-    public void setTransactiondetails(String transactiondetails) {
-        this.transactiondetails = transactiondetails;
+    public void setTransactionDetails(String transactionDetails) {
+        this.transactionDetails = transactionDetails;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 
-    public void setValue(int value) {
+    public void setValue(double value) {
         this.value = value;
     }
 
-    public List<ClientsModel> getClents(){
-        return clients;
-    }
-
-    public void addClient(ClientsModel client){
-        clients.add(client);
-    }
-    
     @Override
     public String toString() {
-       String w = "Transactions=" + transactionId + ", toAccountNumber=" + toAccountNumber + ", transactiondetails=" + transactiondetails + ", value=" + value + '}';
-       for(ClientsModel c: clients){
-           w+="\n   "+w.toString();
-       }
-       return w;
+        String str = "";
+        str += String.format("%d %5d %10d %15s %20.2f$", transactionId, toAccountNumber, fromAccountNumber , transactionDetails, value);
+        return str;
     }
 }

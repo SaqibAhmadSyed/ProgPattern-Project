@@ -1,52 +1,133 @@
 package progfinalproject.dbhelper;
+
 import progfinalproject.Interfaces.Accounts;
 import progfinalproject.models.ClientsModel;
 import progfinalproject.models.AccountsModel;
+
+import javax.xml.transform.Result;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class AccountsDAO {
-//    public boolean createClient(int id, String fName, String lName, String identification, String address) {
-//        try {
-//            Connection con = BAMSDBConnection.createConnection();
-//            String query = "INSERT INTO CLIENTS (FIRSTNAME, LASTNAME, IDENTIFICATION, ADDRESS)" +
-//                    "VALUES (?,?,?,?,?)";
-//            PreparedStatement stmt = con.prepareStatement(query);
-//            stmt.setInt(1, id);
-//            stmt.setString(2, fName);
-//            stmt.setString(3, lName);
-//            stmt.setString(4, identification);
-//            stmt.setString(5, address);
-//            stmt.executeUpdate();
-//            return true;
-//        } catch (Exception e) {
-//            System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
-//            return false;
-//        }
-//    }
-
-    public void createAccount(int accId, int cId, String accountType, int balance, boolean isActive) {
-
+    public void createAccount(int cId, String accountType) {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy"); //formatted date
+        LocalDate localDate = LocalDate.now();
+        String dateString = dtf.format(localDate);
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
-            String query = "INSERT INTO ACCOUNTS (ACCOUNTNUM, CLIENTID, ACCOUNTTYPE, OPENDATE, BALANCE, ISACTIVE) VALUES (?,?,?,?,?,?)";
-            PreparedStatement stmt = con.prepareStatement(query);
-            java.sql.Date date = getCurrentDatetime();
-            stmt.setInt(1, accId);
-            stmt.setInt(2, cId);
-            stmt.setString(3, accountType);
-            stmt.setDate(4, date);
-            stmt.setInt(5, balance);
-            stmt.setBoolean(6, isActive);
+            String query = "INSERT INTO ACCOUNTS (CLIENTID, ACCOUNTTYPE, OPENDATE, BALANCE, ISACTIVE) VALUES (?,?,?,?,?)";
+            PreparedStatement pstmt = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            pstmt.setInt(1, cId);
+            pstmt.setString(2, accountType);
+            pstmt.setString(3, dateString);
+            pstmt.setDouble(4, 0.00); //default 0.00$
+            pstmt.setBoolean(5, true); //default is true because account is active
+            pstmt.executeUpdate();
+            System.out.println("Account successfuly created");
+
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
         }
     }
 
+    public AccountsModel readAccount(int id) {
+        try {
+            Connection con = BAMSDBConnection.getSingleBAMSCon();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE ACCOUNTID=" + id);
 
+            if (rs.next()) {
+                int aId = rs.getInt("ACCOUNTID");
+                int cId = rs.getInt("CLIENTID");
+                String accType = rs.getString("ACCOUNTTYPE");
+                String date = rs.getString("OPENDATE");
+                double balance = rs.getDouble("BALANCE");
+                boolean isActive = rs.getBoolean("ISACTIVE");
 
-    public java.sql.Date getCurrentDatetime() {
-        java.util.Date today = new java.util.Date();
-        return new java.sql.Date(today.getTime());
+                if (aId == id) {
+                    return new AccountsModel(aId, cId, accType, date, balance, isActive);
+                }
+            } else {
+                System.out.println("id does not exist");
+            }
+            return null;
+        } catch(Exception e) {
+            System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
+        }
+        return null;
+    }
+
+    public void deactivateAccount(int id) {
+        try {
+            Connection con = BAMSDBConnection.getSingleBAMSCon();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT BALANCE, ISACTIVE FROM ACCOUNTS");
+
+            if (rs.next()) {
+                double balance = rs.getDouble("BALANCE");
+                if (balance == 0.00) {
+                    System.out.println("Cannot deactivate account with a balance of 0");
+                } else {
+                    stmt.executeUpdate("UPDATE ACCOUNTS SET ISACTIVE='FALSE'");
+                    System.out.println("successfuly deactivated");
+                }
+            } else {
+                System.out.println("id does not exist");
+            }
+        } catch(Exception e) {
+            System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
+        }
+    }
+
+    public void addBalance(int id, double depositAmount) {
+        try {
+            Connection con = BAMSDBConnection.getSingleBAMSCon();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNTID=" + id);
+
+            if (rs.next()) {
+                double currentAmount = rs.getDouble("BALANCE");
+                double newAmount =  readAccount(id).getBalance() + depositAmount;
+                stmt.executeUpdate("UPDATE ACCOUNTS SET BALANCE=" + newAmount + " WHERE ACCOUNTID=" + id);
+                System.out.println("Successfully added " + depositAmount + "$ in your account");
+            } else {
+                System.out.println("id does not exist");
+            }
+
+        } catch(Exception e) {
+        System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
+        }
+    }
+    public void readAllAccounts() {
+        List<AccountsModel> accountList = new ArrayList<>();
+
+        try {
+            Connection con = BAMSDBConnection.getSingleBAMSCon();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS");
+
+            while (rs.next()) {
+                int aId = rs.getInt("ACCOUNTID");
+                int cId = rs.getInt("CLIENTID");
+                String accType = rs.getString("ACCOUNTTYPE");
+                String date = rs.getString("OPENDATE");
+                double balance = rs.getDouble("BALANCE");
+                boolean isActive = rs.getBoolean("ISACTIVE");
+
+                accountList.add(new AccountsModel(aId, cId, accType, date, balance, isActive));
+            }
+            String formattedString = accountList.toString()
+                    .replace(", ", "")  //remove the commas
+                    .replace("[", "")  //remove the right bracket
+                    .replace("]", ""); //remove the left bracket
+            System.out.println(formattedString);
+        } catch (Exception e) {
+            System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
+        }
     }
 }

@@ -5,8 +5,7 @@ import progfinalproject.Interfaces.Clients;
 import progfinalproject.models.ClientsModel;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
         
 /**
  *
@@ -17,18 +16,18 @@ public class ClientsDAO implements Clients {
     public ClientsDAO() {
         
     }
-    public void createClient(int id, String fName, String lName, String identification, String address) {
+    public void createClient(String fName, String lName, String identification, String address) {
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
-            String query = "INSERT INTO CLIENTS (CLIENTID, FIRSTNAME, LASTNAME, IDENTIFICATION, ADDRESS)" +
-                    "VALUES (?,?,?,?,?)";
-            PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setInt(1, id);
-            stmt.setString(2, fName);
-            stmt.setString(3, lName);
-            stmt.setString(4, identification);
-            stmt.setString(5, address);
+            String query = "INSERT INTO CLIENTS (FIRSTNAME, LASTNAME, IDENTIFICATION, ADDRESS)" +
+                    "VALUES (?,?,?,?)";
+            PreparedStatement stmt = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, fName);
+            stmt.setString(2, lName);
+            stmt.setString(3, identification);
+            stmt.setString(4, address);
             stmt.executeUpdate();
+            System.out.println("Client created successfully");
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
         }
@@ -37,14 +36,21 @@ public class ClientsDAO implements Clients {
     public ClientsModel readClients(int id) {
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
-            PreparedStatement stm
-                    = con.prepareStatement("SELECT CLIENTID, FIRSTNAME, LASTNAME, IDENTIFICATION, ADDRESS FROM CLIENTS WHERE CLIENTID=?");
-            stm.setInt(1, id);
-            ResultSet rs = stm.executeQuery();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM CLIENTS WHERE CLIENTID=" + id);
+
             if (rs.next()) {
-                return new ClientsModel(rs);
+                int cId = rs.getInt("CLIENTID");
+                String fName = rs.getString("FIRSTNAME");
+                String lName = rs.getString("LASTNAME");
+                String identification = rs.getString("IDENTIFICATION");
+                String address = rs.getString("ADDRESS");
+
+                return new ClientsModel(cId, fName, lName, identification, address);
+            } else {
+                System.out.println("id does not exist");
+                return null;
             }
-            return null;
         } catch(Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
         }
@@ -56,7 +62,7 @@ public class ClientsDAO implements Clients {
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("UPDATE CLIENTS SET IDENTIFICATION='" + identification + "';");
+            stmt.executeUpdate("UPDATE CLIENTS SET IDENTIFICATION='" + identification + "'" + "WHERE CLIENTID=" + id);
             System.out.println("Update Successful!");
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
@@ -68,33 +74,39 @@ public class ClientsDAO implements Clients {
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
             Statement stmt = con.createStatement();
-            stmt.executeUpdate("UPDATE CLIENTS SET ADDRESS='" + address + "';");
+            stmt.executeUpdate("UPDATE CLIENTS SET ADDRESS='" + address + "'" + "WHERE CLIENTID=" + id);
             System.out.println("Update Successful!");
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
         }
     }
     
-    public Map<Integer, String> readAllClients(){
-        Map<Integer, String> clientMap = new HashMap<>();
+    public void readAllClients(){
+        List<ClientsModel> clientList = new ArrayList<>();
 
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM CLIENTS");
-            
+
             while (rs.next()) {
-                int id = rs.getInt("CLIENTID");
+                int cId = rs.getInt("CLIENTID");
                 String fName = rs.getString("FIRSTNAME");
                 String lName = rs.getString("LASTNAME");
                 String identification = rs.getString("IDENTIFICATION");
                 String address = rs.getString("ADDRESS");
 
-                clientMap.put(id, fName + lName + identification + address + "\n");
+                clientList.add(new ClientsModel(cId, fName, lName, identification, address));
             }
-        } catch (Exception e) { 
+            clientList.sort((ClientsModel c1, ClientsModel c2) -> c1.getFirstName().
+                    compareTo(c2.getFirstName()));
+            String formattedString = clientList.toString()
+                .replace(", ", "")  //remove the commas
+                .replace("[", "")  //remove the right bracket
+                .replace("]", ""); //remove the left bracket
+            System.out.println(formattedString);
+        } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
         }
-        return clientMap;
     }
 }

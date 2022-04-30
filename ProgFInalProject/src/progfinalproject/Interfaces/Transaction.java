@@ -7,17 +7,33 @@ import java.util.Map;
 public interface Transaction {
 
     /**
-     * gets all the transaction from the selected transaction id
-     * @param id transaction id
-     * @return an TransactionsModel object that stored the database data into itself
+     * creates a new transaction and send the desired value to the receiver. The sender will also be deducted after the
+     * transaction.
+     * @param toAccNum destination account number
+     * @param fromAccNum sender account number
+     * @param detail transaction details
+     * @param value value to be sent and received
+     * @return true if transaction has been created and sent
      */
-    public TransactionsModel getTransaction(int id);
+    public boolean createTransaction(int toAccNum, int fromAccNum, String detail, double value);
 
     /**
-     * updates the taken parameter in the databases
-     * @param transaction transaction in which it needs to be updated
-     * @return true if the update is successful
+     * reads a list of all transactions from the same sender.
+     * @param id transaction id
      */
-    public boolean UpdateTransactions (TransactionsModel transaction);
+    public void readClientTransaction(int id);
+
+    /**
+     * Reads a specific transaction
+     * @param id transaction id
+     * @return Transaction Model with database values
+     */
+    public TransactionsModel readSingleTransaction(int id);
+
+    /**
+     * Cancels the transactions. the money from the sender is retrieved and the money of the receiver is deducted.
+     * @param id transaction id
+     */
+    public void cancelTransaction(int id);
 
 }

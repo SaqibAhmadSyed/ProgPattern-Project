@@ -1,47 +1,38 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package progfinalproject.models;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 /**
  *
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class AccountsModel {
-    private int accountNum;
+    private int accountid;
     private int clientId;
     private String accType;
     private String openDate;
-    private int balance;
+    private double balance;
     private boolean isActive;
-    private List<ClientsModel> clients;
 
-    public AccountsModel(ResultSet rs) {
-        try{
-            this.accountNum = rs.getInt("accountNum");
-            this.clientId = rs.getInt("clientId");
-            this.accType = rs.getString("accType");
-            this.openDate = rs.getString("openDate");
-            this.balance = rs.getInt("balance");
-            this.isActive = rs.getBoolean("IsActive");
-        }catch(SQLException e){
-            System.out.println("Error creating accounts model [" + e.getMessage() + "]");
-        }
-        clients = new ArrayList<>();
+    public AccountsModel(int accountId, int clientId, String accType, String openDate, double balance, boolean isActive) {
+        this.accountid = accountId;
+        this.clientId = clientId;
+        this.accType = accType;
+        this.openDate = openDate;
+        this.balance = balance;
+        this.isActive = isActive;
     }
 
-    public int getAccountNum() {
-        return accountNum;
+    public int getAccountId() {
+        return accountid;
     }
 
-    public void setAccountNum(int accountNum) {
-        this.accountNum = accountNum;
+    public void setAccountId(int accountId) {
+        this.accountid = accountId;
     }
 
     public int getClientId() {
@@ -68,7 +59,7 @@ public class AccountsModel {
         this.openDate = openDate;
     }
 
-    public int getBalance() {
+    public double getBalance() {
         return balance;
     }
 
@@ -83,18 +74,11 @@ public class AccountsModel {
     public void setIsActive(boolean isActive) {
         this.isActive = isActive;
     }
-
-    public List<ClientsModel> getClents(){ return clients; }
-
-    public void addClient(ClientsModel client){ clients.add(client); }
-
     @Override
     public String toString() {
-        String w = "AccountsModel=" + "accountNum=" + accountNum + ", clientId=" + clientId + ", accType=" + accType + ", openDate=" + openDate + ", balance=" + balance + ", IsActive=" + isActive + '}';
-        for(ClientsModel c: clients){
-            w+="\n   "+w.toString();
-        }
-        return w;
+        String str = "";
+        str += String.format("%d %5d %10s %15s %20.2f$ %25b\n", accountid, clientId, accType , openDate, balance, isActive);
+        return str;
     }
     
 }

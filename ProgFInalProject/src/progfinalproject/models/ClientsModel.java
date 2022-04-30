@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package progfinalproject.models;
 
 import java.sql.ResultSet;
@@ -19,18 +15,6 @@ public class ClientsModel {
     private String lastName;
     private String identification;
     private String address;
-
-    public ClientsModel(ResultSet rs) {
-        try{
-            this.clientId = rs.getInt("clientId");
-            this.firstName = rs.getString("firstName");
-            this.lastName = rs.getString("lastName");
-            this.identification = rs.getString("identification");
-            this.address = rs.getString("address");
-        }catch(SQLException e){
-            System.out.println("Error creating clients model [" + e.getMessage() + "]");
-        }
-    }
 
     public ClientsModel(int clientId, String firstName, String lastName, String identification, String address) {
         this.clientId = clientId;
@@ -82,7 +66,9 @@ public class ClientsModel {
 
     @Override
     public String toString() {
-        return "Clients=" + "clientId=" + clientId + ", First Name=" + firstName + ", Last Name=" + lastName + ", Identification=" + identification + ", Address=" + address;
+        String str = "";
+        str += String.format("%d %5s %10s %15s %20s\n", clientId, firstName, lastName, identification, address);
+        return str;
     }
     
 }

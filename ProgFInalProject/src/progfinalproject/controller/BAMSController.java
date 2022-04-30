@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package progfinalproject.controller;
 
 import java.sql.Connection;
@@ -28,20 +24,6 @@ public class BAMSController {
     //CONNECTION
     Connection con;
 
-    public BAMSController(List<ClientsModel> cModel, ClientsView cView)
-    throws Exception{
-        this.cModel = cModel;
-        this.cView = cView;
-        con = BAMSDBConnection.getSingleBAMSCon();
-    }
-
-    public BAMSController(List<TransactionsModel> tModels,
-    TransactionsView tview) throws Exception{
-        this.tModels = tModels;
-        this.tview = tview;
-        con = BAMSDBConnection.getSingleBAMSCon();
-    }
-
     public BAMSController() {
     }
     
@@ -53,11 +35,11 @@ public class BAMSController {
         Connection con = BAMSDBConnection.getSingleBAMSCon();
         Statement stmt = con.createStatement();
         String query = "CREATE TABLE CLIENTS"
-                + "(CLIENTID       INT  PRIMARY KEY    NOT NULL,"
-                + "FIRSTNAME       TEXT                NOT NULL,"
-                + "LASTNAME        TEXT                NOT NULL,"
-                + "IDENTIFICATION  TEXT                NOT NULL,"
-                + "ADDRESS         TEXT                NOT NULL)";
+                + "(CLIENTID       INTEGER  PRIMARY KEY AUTOINCREMENT,"
+                + "FIRSTNAME       TEXT                 NOT NULL,"
+                + "LASTNAME        TEXT                 NOT NULL,"
+                + "IDENTIFICATION  TEXT                 NOT NULL,"
+                + "ADDRESS         TEXT                 NOT NULL)";
         
         stmt.executeUpdate("DROP TABLE if exists CLIENTS;");
         stmt.executeUpdate(query);
@@ -69,13 +51,14 @@ public class BAMSController {
      * @throws Exception creates exception message if database failed to be created
      */
     public void createTransactionsTable() throws Exception {
+        Connection con = BAMSDBConnection.getSingleBAMSCon();
         Statement stmt = con.createStatement();
         String query = "CREATE TABLE TRANSACTIONS"
-                + "(TRANSACTIONID       INT  PRIMARY KEY    AUTOINCREMENT,"
-                + "TOACCOUNTNUM         INT                 NOT NULL,"
-                + "FROMACCOUNTNUM       INT                 NOT NULL,"
-                + "TRANSACTIONDETAIL    TEXT                NOT NULL,"
-                + "VALUE                INT                 NOT NULL)";
+                + "(TRANSACTIONID       INTEGER  PRIMARY KEY    AUTOINCREMENT,"
+                + "TOACCOUNTID        INT                     NOT NULL,"
+                + "FROMACCOUNTID       INT                     NOT NULL,"
+                + "TRANSACTIONDETAIL    TEXT                    NOT NULL,"
+                + "VALUE                DECIMAL                 NOT NULL)";
         
         stmt.executeUpdate("DROP TABLE if exists TRANSACTIONS;");
         stmt.executeUpdate(query);
@@ -87,49 +70,20 @@ public class BAMSController {
      * @throws Exception creates exception message if database failed to be created
      */
     public void createAccountsTable() throws Exception {
+        Connection con = BAMSDBConnection.getSingleBAMSCon();
         Statement stmt = con.createStatement();
         String query = "CREATE TABLE ACCOUNTS"
-                + "(ACCOUNTNUM          INT  PRIMARY KEY    NOT NULL,"
-                + "OPENDATE             TEXT                NOT NULL,"
-                + "BALANCE              INT                 NOT NULL,"
+                + "(ACCOUNTID           INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "CLIENTID             INT                 NOT NULL,"
+                + "ACCOUNTTYPE          TEXT                NOT NULL,"
+                + "OPENDATE             DATE                NOT NULL,"
+                + "BALANCE              DECIMAL             NOT NULL,"
                 + "ISACTIVE             BIT                 NOT NULL,"
-                + "VALUE                INT                 NOT NULL)"
-                + "FOREIGN KEY(CLIENTID) REFERENCES CLIENTS(CLIENTSID),"
-                + "FOREIGN KEY(TRANSACTIONID) REFERENCES TRANSACTIONS"
-                + "(TRANSACTIONID))";
+                + "FOREIGN KEY(CLIENTID) REFERENCES CLIENTS(CLIENTID))";
         
-        stmt.executeUpdate("DROP TABLE if exists TRANSACTIONS;");
+        stmt.executeUpdate("DROP TABLE if exists ACCOUNTS;");
         stmt.executeUpdate(query);
-        System.out.println("Table TRANSACTIONS created...");
-    }
-    
-    /**
-     * Adds a client in a database
-     * @param c Client Model object
-     * @throws Exception creates exception message if database is inaccessible
-     */
-    public void addClients(ClientsModel c) throws Exception {
-        Statement stmt = con.createStatement();
-        String query = "INSERT INTO CLIENTS (CLIENTID, FIRSTNAME, LASTNAME,"
-                + " IDENTIFICATION, ADDRESS) "
-                + "VALUES (" + c.getClientId() + ", '" + c.getFirstName() +
-                "', '" + c.getLastName() + "', '" + c.getIdentification() +
-                "','" + c.getAddress() + "');";
-        stmt.executeUpdate(query);
-        System.out.println("Client Added");
-    }
-    
-    /**
-     * Creates Teller table
-     * @throws Exception 
-     */
-    public void createTellerTable() throws Exception {
-        Statement stmt = con.createStatement();
-        String query = "CREATE TABLE TELLER";
-        
-        stmt.executeUpdate("DROP TABLE if exists TELLER;");
-        stmt.executeUpdate(query);
-        System.out.println("Table TELLER created...");
+        System.out.println("Table ACCOUNTS created...");
     }
    //INSERT STATEMENTS THAT MAY BE USED LATER ON
     /*

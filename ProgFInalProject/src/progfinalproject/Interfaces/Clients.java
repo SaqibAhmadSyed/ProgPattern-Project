@@ -1,5 +1,6 @@
 package progfinalproject.Interfaces;
 
+import java.util.List;
 import java.util.Map;
 
 import progfinalproject.models.ClientsModel;
@@ -9,14 +10,13 @@ public interface Clients {
     /**
      *
      * Creates a new client in the database
-     * @param id client id
      * @param fName client first name
      * @param lName client last name
      * @param identification client identification
      * @param address cilent address
      * @return true if query has been executed
      */
-    public void createClient(int id, String fName, String lName, String identification, String address) throws Exception;
+    public void createClient(String fName, String lName, String identification, String address) throws Exception;
 
     /**
      * Displays the database of a selected client
@@ -33,13 +33,13 @@ public interface Clients {
 
     /**
      * Updates the information of the client address
-     * @param identification client address
+     * @param address client address
      */
-    public void updateClientAddress(int id, String addres);
+    public void updateClientAddress(int id, String address);
     
     /**
-     * Prints out all the client database from a map
+     * Prints out all the client database from a map sorted by first name
      * @return a map of all the clients
      */
-    public Map<Integer, String> readAllClients();
+    public void readAllClients();
 }
