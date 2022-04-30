@@ -81,7 +81,7 @@ public class ClientsDAO implements Clients {
         }
     }
     
-    public void readAllClients(){
+    public List<ClientsModel> readAllClients(){
         List<ClientsModel> clientList = new ArrayList<>();
 
         try {
@@ -105,8 +105,10 @@ public class ClientsDAO implements Clients {
                 .replace("[", "")  //remove the right bracket
                 .replace("]", ""); //remove the left bracket
             System.out.println(formattedString);
+            return clientList;
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
         }
+        return null;
     }
 }

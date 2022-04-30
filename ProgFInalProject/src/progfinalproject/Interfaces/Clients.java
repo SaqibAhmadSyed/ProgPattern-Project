@@ -41,5 +41,5 @@ public interface Clients {
      * Prints out all the client database from a map sorted by first name
      * @return a map of all the clients
      */
-    public void readAllClients();
+    public List<ClientsModel> readAllClients();
 }

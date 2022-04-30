@@ -171,4 +171,31 @@ public class TransactionDAO implements Transaction {
             System.out.println("Error Connecting to the DB [" + e.getMessage() + "]");
         }
     }
+
+    public List<TransactionsModel> readAllTransaction() {
+        List<TransactionsModel> transactionList = new ArrayList<>();
+        try {
+            Connection con = BAMSDBConnection.getSingleBAMSCon();
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM TRANSACTIONS");
+
+            while (rs.next()) {
+                int tId = rs.getInt("TRANSACTIONID");
+                int toAccId = rs.getInt("TOACCOUNTID");
+                int fromAccId = rs.getInt("FROMACCOUNTID");
+                String detail = rs.getString("TRANSACTIONDETAIL");
+                double value = rs.getDouble("VALUE");
+                transactionList.add(new TransactionsModel(tId, toAccId, fromAccId, detail, value));
+            }
+            String formattedString = transactionList.toString()
+                    .replace(", ", "")  //remove the commas
+                    .replace("[", "")  //remove the right bracket
+                    .replace("]", ""); //removes the left bracket
+            System.out.println(formattedString);
+            return transactionList;
+        } catch (Exception e) {
+            System.out.println("Error Connecting to the DB [" + e.getMessage() + "]");
+        }
+        return null;
+    }
 }

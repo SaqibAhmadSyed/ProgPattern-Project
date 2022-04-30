@@ -63,7 +63,7 @@ public class TransactionsModel {
     @Override
     public String toString() {
         String str = "";
-        str += String.format("%d %5d %10d %15s %20.2f$", transactionId, toAccountNumber, fromAccountNumber , transactionDetails, value);
+        str += String.format("%d %5d %10d %15s %20.2f$ \n", transactionId, toAccountNumber, fromAccountNumber , transactionDetails, value);
         return str;
     }
 }

@@ -2,6 +2,8 @@ package progfinalproject.Interfaces;
 
 import progfinalproject.models.AccountsModel;
 
+import java.util.List;
+
 public interface Accounts {
 
     /**
@@ -34,5 +36,5 @@ public interface Accounts {
     /**
      * displays all the account in the database
      */
-    public void readAllAccounts();
+    public List<AccountsModel> readAllAccounts();
 }

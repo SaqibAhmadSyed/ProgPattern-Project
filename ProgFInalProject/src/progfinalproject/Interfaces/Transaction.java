@@ -2,6 +2,7 @@ package progfinalproject.Interfaces;
 
 import progfinalproject.models.TransactionsModel;
 
+import java.util.List;
 import java.util.Map;
 
 public interface Transaction {
@@ -35,5 +36,11 @@ public interface Transaction {
      * @param id transaction id
      */
     public void cancelTransaction(int id);
+
+    /**
+     * reads all transactions in database
+     * @return list of all datas
+     */
+    public List<TransactionsModel> readAllTransaction();
 
 }

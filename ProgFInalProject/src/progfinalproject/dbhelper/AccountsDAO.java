@@ -103,7 +103,7 @@ public class AccountsDAO {
         System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
         }
     }
-    public void readAllAccounts() {
+    public List<AccountsModel> readAllAccounts() {
         List<AccountsModel> accountList = new ArrayList<>();
 
         try {
@@ -126,8 +126,10 @@ public class AccountsDAO {
                     .replace("[", "")  //remove the right bracket
                     .replace("]", ""); //remove the left bracket
             System.out.println(formattedString);
+            return accountList;
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
         }
+        return null;
     }
 }

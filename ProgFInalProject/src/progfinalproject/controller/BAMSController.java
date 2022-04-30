@@ -4,29 +4,37 @@ package progfinalproject.controller;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.List;
+
+import progfinalproject.Interfaces.Accounts;
+import progfinalproject.dbhelper.AccountsDAO;
 import progfinalproject.dbhelper.BAMSDBConnection;
+import progfinalproject.dbhelper.ClientsDAO;
+import progfinalproject.dbhelper.TransactionDAO;
+import progfinalproject.models.AccountsModel;
 import progfinalproject.models.ClientsModel;
-import progfinalproject.views.ClientsView;
 import progfinalproject.models.TransactionsModel;
-import progfinalproject.views.TransactionsView;
+
 
 /**
  *
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class BAMSController {
-    // CLIENT
-    List<ClientsModel> cModel;
-    ClientsView cView;
-    //TRANSACTION
-    List<TransactionsModel> tModels;
-    TransactionsView tview;
-    //CONNECTION
+    int index = -1;
     Connection con;
+    List<ClientsModel> clients;
+    List<TransactionsModel> transactions;
+    List<AccountsModel> accounts;
+
+
+    ClientsDAO cDAO = new ClientsDAO();
+    AccountsDAO aDAO = new AccountsDAO();
+    TransactionDAO tDAO = new TransactionDAO();
+
 
     public BAMSController() {
     }
-    
+
     /**
      * Creates the Clients table
      * @throws Exception creates exception message if database failed to be created
@@ -85,6 +93,17 @@ public class BAMSController {
         stmt.executeUpdate(query);
         System.out.println("Table ACCOUNTS created...");
     }
+
+    public void fetchAllClients() {
+        cDAO.readAllClients();
+    }
+    public void fetchAllAccounts() {
+        aDAO.readAllAccounts();
+    }
+    public void fetchAllTransactions() {
+        tDAO.readAllTransaction();
+    }
+
    //INSERT STATEMENTS THAT MAY BE USED LATER ON
     /*
     INSERT INTO CLIENTS ( clientId, firstName,  lastName, identification, address) VALUES (1, 'Max',    'Johnson', 'passport', '5th avenue');
