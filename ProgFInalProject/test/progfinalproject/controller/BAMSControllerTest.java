@@ -5,12 +5,16 @@
  */
 package progfinalproject.controller;
 
+import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import progfinalproject.models.AccountsModel;
+import progfinalproject.models.ClientsModel;
+import progfinalproject.models.TransactionsModel;
 
 /**
  *
@@ -18,7 +22,6 @@ import static org.junit.Assert.*;
  */
 public class BAMSControllerTest {
     
-    BAMSController test;            
     public BAMSControllerTest() {
     }
     
@@ -32,7 +35,6 @@ public class BAMSControllerTest {
     
     @Before
     public void setUp() {
-        test = new BAMSController();
     }
     
     @After
@@ -46,7 +48,70 @@ public class BAMSControllerTest {
     public void testFetchAllClients() {
         System.out.println("fetchAllClients");
         BAMSController instance = new BAMSController();
-        instance.fetchAllClients();
+        List<ClientsModel> expResult = null;
+        List<ClientsModel> result = instance.fetchAllClients();
+        //assertEquals(expResult, result);
+        assertFalse(result.isEmpty());
+    }
+
+    /**
+     * Test of createClient method, of class BAMSController.
+     */
+    @Test
+    public void testCreateClient() {
+        System.out.println("createClient");
+        String fName = "John";
+        String lName = "Smith";
+        String identification = "passport";
+        String address = "2nd street";
+        BAMSController instance = new BAMSController();
+        boolean expResult = true;
+        boolean result = instance.createClient(fName, lName, identification, address);
+        assertEquals(expResult, result);
+      
+    }
+
+    /**
+     * Test of readClients method, of class BAMSController.
+     */
+    @Test
+    public void testReadClients() {
+        System.out.println("readClients");
+        int id = 0;
+        BAMSController instance = new BAMSController();
+        ClientsModel expResult = null;
+        ClientsModel result = instance.readClients(id);
+        assertEquals(expResult, result);
+       
+    }
+
+    /**
+     * Test of updateClientIdentification method, of class BAMSController.
+     */
+    @Test
+    public void testUpdateClientIdentification() {
+        System.out.println("updateClientIdentification");
+        int id = 0;
+        String identification = "";
+        BAMSController instance = new BAMSController();
+        boolean expResult = false;
+        boolean result = instance.updateClientIdentification(id, identification);
+        assertEquals(expResult, result);
+       
+    }
+
+    /**
+     * Test of updateClientAddress method, of class BAMSController.
+     */
+    @Test
+    public void testUpdateClientAddress() {
+        System.out.println("updateClientAddress");
+        int id = 0;
+        String address = "";
+        BAMSController instance = new BAMSController();
+        boolean expResult = false;
+        boolean result = instance.updateClientAddress(id, address);
+        assertEquals(expResult, result);
         
     }
 
@@ -57,8 +122,68 @@ public class BAMSControllerTest {
     public void testFetchAllAccounts() {
         System.out.println("fetchAllAccounts");
         BAMSController instance = new BAMSController();
-        instance.fetchAllAccounts();
+        List<AccountsModel> expResult = null;
+        List<AccountsModel> result = instance.fetchAllAccounts();
+        //assertEquals(expResult, result);
+        assertFalse(result.isEmpty());
+    }
+
+    /**
+     * Test of createAccount method, of class BAMSController.
+     */
+    @Test
+    public void testCreateAccount() {
+        System.out.println("createAccount");
+        int cId = 1;
+        String accountType = "checking";
+        BAMSController instance = new BAMSController();
+        boolean expResult = true;
+        boolean result = instance.createAccount(cId, accountType);
+        assertEquals(expResult, result);
         
+    }
+
+    /**
+     * Test of readAccount method, of class BAMSController.
+     */
+    @Test
+    public void testReadAccount() {
+        System.out.println("readAccount");
+        int id = 1;
+        BAMSController instance = new BAMSController();
+        AccountsModel expResult = null;
+        AccountsModel result = instance.readAccount(id);
+        assertEquals(expResult, result);
+        
+    }
+
+    /**
+     * Test of deactivateAccount method, of class BAMSController.
+     */
+    @Test
+    public void testDeactivateAccount() {
+        System.out.println("deactivateAccount");
+        int id = 0;
+        BAMSController instance = new BAMSController();
+        boolean expResult = false;
+        boolean result = instance.deactivateAccount(id);
+        assertEquals(expResult, result);
+    
+    }
+
+    /**
+     * Test of addBalance method, of class BAMSController.
+     */
+    @Test
+    public void testAddBalance() {
+        System.out.println("addBalance");
+        int id = 0;
+        double depositAmount = 0.0;
+        BAMSController instance = new BAMSController();
+        boolean expResult = false;
+        boolean result = instance.addBalance(id, depositAmount);
+        assertEquals(expResult, result);
+       
     }
 
     /**
@@ -68,7 +193,70 @@ public class BAMSControllerTest {
     public void testFetchAllTransactions() {
         System.out.println("fetchAllTransactions");
         BAMSController instance = new BAMSController();
-        instance.fetchAllTransactions();
+        List<TransactionsModel> expResult = null;
+        List<TransactionsModel> result = instance.fetchAllTransactions();
+        assertEquals(expResult, result);
+        
+    }
+
+       /**
+     * Test of createTransaction method, of class BAMSController.
+     */
+    @Test
+    public void testCreateTransaction() {
+        System.out.println("createTransaction");
+        int toAccNum = 2;
+        int fromAccNum = 1;
+        String detail = "stuff";
+        double value = 0.0;
+        BAMSController instance = new BAMSController();
+        instance.createAccount(1, "Checking");
+        instance.createAccount(2, "Saving");
+        boolean expResult = true;
+        boolean result = instance.createTransaction(toAccNum, fromAccNum, detail, value);
+        assertEquals(expResult, result);
+        
+    }
+
+    /**
+     * Test of readClientTransaction method, of class BAMSController.
+     */
+    @Test
+    public void testReadClientTransaction() {
+        System.out.println("readClientTransaction");
+        int id = 0;
+        BAMSController instance = new BAMSController();
+        boolean expResult = false;
+        boolean result = instance.readClientTransaction(id);
+        assertEquals(expResult, result);
+       
+    }
+
+    /**
+     * Test of readSingleTransaction method, of class BAMSController.
+     */
+    @Test
+    public void testReadSingleTransaction() {
+        System.out.println("readSingleTransaction");
+        int id = 0;
+        BAMSController instance = new BAMSController();
+        TransactionsModel expResult = null;
+        TransactionsModel result = instance.readSingleTransaction(id);
+        assertEquals(expResult, result);
+        
+    }
+
+    /**
+     * Test of cancelTransaction method, of class BAMSController.
+     */
+    @Test
+    public void testCancelTransaction() {
+        System.out.println("cancelTransaction");
+        int id = 0;
+        BAMSController instance = new BAMSController();
+        boolean expResult = false;
+        boolean result = instance.cancelTransaction(id);
+        assertEquals(expResult, result);
         
     }
     
