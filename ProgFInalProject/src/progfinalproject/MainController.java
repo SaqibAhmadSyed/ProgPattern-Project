@@ -34,9 +34,9 @@ public class MainController {
 //        ClientsDAO cDAO = new ClientsDAO();
 //        AccountsDAO a = new AccountsDAO();
         TransactionDAO t = new TransactionDAO();
-//        controller.createClientsTable();
-//        controller.createAccountsTable();
-//        controller.createTransactionsTable();
+        controller.createClientsTable();
+        controller.createAccountsTable();
+        controller.createTransactionsTable();
 //
 //        cDAO.createClient("xesus", "christ", "goated", "no adress");
 //        cDAO.createClient("jesus", "christ", "goated", "no adress");
