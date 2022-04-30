@@ -32,10 +32,10 @@ public class TransactionDAO {
             Statement updateStmt = con.createStatement();
 
             while (createRs.next()) {
-                if(!createRs.next()) {
-                    System.out.println("need 2 existing ids");
-                    return false;
-                }
+//                if(!createRs.next()) {
+//                    System.out.println("need 2 existing ids");
+//                    return false;
+//                }
                 if (createRs.getInt("ACCOUNTID") == toAccNum) {
                     isFirstEqual = true;
                 }
@@ -130,10 +130,7 @@ public class TransactionDAO {
                 if (tId == id) {
                     return new TransactionsModel(tId, toAccId, fromAccId, detail, value);
                 }
-            } else {
-                System.out.println("id does not exist");
-                return null;
-            }
+            } 
         } catch(Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
         }

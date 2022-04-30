@@ -62,11 +62,12 @@ public class MainController {
 //        t.readClientTransaction(1);
 //        t.readSingleTransaction(3);
 //        t.readAllTransaction();
-        controller.createAccount(1, "Checking");
-        controller.createAccount(2, "Saving");
-        System.out.println(controller.createTransaction(2, 1, "nigtwerk", 0.00));
+//        controller.createAccount(1, "Checking");
+//        controller.createAccount(2, "Saving");
+//        System.out.println(controller.createTransaction(2, 1, "nigtwerk", 0.00));
 //        controller.fetchAllAccounts();
 //        controller.fetchAllTransactions();
 //        controller.fetchAllClients();
+            System.out.println(controller.readSingleTransaction(1));
     }
 }

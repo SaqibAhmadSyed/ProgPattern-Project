@@ -74,6 +74,7 @@ public class AccountsDAO {
                 double balance = rs.getDouble("BALANCE");
                 if (balance == 0.00) {
                     System.out.println("Cannot deactivate account with a balance of 0");
+                    return false;
                 } else {
                     stmt.executeUpdate("UPDATE ACCOUNTS SET ISACTIVE='FALSE'");
                     System.out.println("successfuly deactivated");
