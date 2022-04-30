@@ -32,6 +32,10 @@ public class TransactionDAO implements Transaction {
             Statement updateStmt = con.createStatement();
 
             while (createRs.next()) {
+                if(!createRs.next()) {
+                    System.out.println("need 2 existing ids");
+                    return false;
+                }
                 if (createRs.getInt("ACCOUNTID") == toAccNum) {
                     isFirstEqual = true;
                 }
@@ -46,7 +50,6 @@ public class TransactionDAO implements Transaction {
                 pstmt.setString(3, detail);
                 pstmt.setDouble(4, value);
                 pstmt.executeUpdate();
-
             } else if (toAccNum == fromAccNum) {
                 System.out.println("Cannot send to same id");
                 return false;
@@ -69,10 +72,12 @@ public class TransactionDAO implements Transaction {
             if (receiverBalanceRs.next()) {
                 double currentBalance = receiverBalanceRs.getDouble("BALANCE");
                 double total = currentBalance + value;
-
                 updateStmt.executeUpdate("UPDATE ACCOUNTS SET BALANCE=" + total + " WHERE ACCOUNTID=" + toAccNum);
+            } else {
+                return false;
             }
             System.out.println("Transaction successfuly created ");
+            return true;
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB [" + e.getMessage() + "]");
         }

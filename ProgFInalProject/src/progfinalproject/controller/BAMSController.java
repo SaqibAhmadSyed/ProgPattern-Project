@@ -34,64 +34,64 @@ public class BAMSController {
 
     public BAMSController() {
     }
-//    /**
-//     * Creates the Clients table
-//     * @throws Exception creates exception message if database failed to be created
-//     */
-//    public void createClientsTable() throws Exception {
-//        Connection con = BAMSDBConnection.getSingleBAMSCon();
-//        Statement stmt = con.createStatement();
-//        String query = "CREATE TABLE CLIENTS"
-//                + "(CLIENTID       INTEGER  PRIMARY KEY AUTOINCREMENT,"
-//                + "FIRSTNAME       TEXT                 NOT NULL,"
-//                + "LASTNAME        TEXT                 NOT NULL,"
-//                + "IDENTIFICATION  TEXT                 NOT NULL,"
-//                + "ADDRESS         TEXT                 NOT NULL)";
-//
-//        stmt.executeUpdate("DROP TABLE if exists CLIENTS;");
-//        stmt.executeUpdate(query);
-//        System.out.println("Table CLIENTS created...");
-//    }
-//
-//    /**
-//     * Creates the Transactions table
-//     * @throws Exception creates exception message if database failed to be created
-//     */
-//    public void createTransactionsTable() throws Exception {
-//        Connection con = BAMSDBConnection.getSingleBAMSCon();
-//        Statement stmt = con.createStatement();
-//        String query = "CREATE TABLE TRANSACTIONS"
-//                + "(TRANSACTIONID       INTEGER  PRIMARY KEY    AUTOINCREMENT,"
-//                + "TOACCOUNTID        INT                     NOT NULL,"
-//                + "FROMACCOUNTID       INT                     NOT NULL,"
-//                + "TRANSACTIONDETAIL    TEXT                    NOT NULL,"
-//                + "VALUE                DECIMAL                 NOT NULL)";
-//
-//        stmt.executeUpdate("DROP TABLE if exists TRANSACTIONS;");
-//        stmt.executeUpdate(query);
-//        System.out.println("Table TRANSACTIONS created...");
-//    }
-//
-//    /**
-//     * Creates Accounts table
-//     * @throws Exception creates exception message if database failed to be created
-//     */
-//    public void createAccountsTable() throws Exception {
-//        Connection con = BAMSDBConnection.getSingleBAMSCon();
-//        Statement stmt = con.createStatement();
-//        String query = "CREATE TABLE ACCOUNTS"
-//                + "(ACCOUNTID           INTEGER PRIMARY KEY AUTOINCREMENT,"
-//                + "CLIENTID             INT                 NOT NULL,"
-//                + "ACCOUNTTYPE          TEXT                NOT NULL,"
-//                + "OPENDATE             DATE                NOT NULL,"
-//                + "BALANCE              DECIMAL             NOT NULL,"
-//                + "ISACTIVE             BIT                 NOT NULL,"
-//                + "FOREIGN KEY(CLIENTID) REFERENCES CLIENTS(CLIENTID))";
-//
-//        stmt.executeUpdate("DROP TABLE if exists ACCOUNTS;");
-//        stmt.executeUpdate(query);
-//        System.out.println("Table ACCOUNTS created...");
-//    }
+    /**
+     * Creates the Clients table
+     * @throws Exception creates exception message if database failed to be created
+     */
+    public void createClientsTable() throws Exception {
+        Connection con = BAMSDBConnection.getSingleBAMSCon();
+        Statement stmt = con.createStatement();
+        String query = "CREATE TABLE CLIENTS"
+                + "(CLIENTID       INTEGER  PRIMARY KEY AUTOINCREMENT,"
+                + "FIRSTNAME       TEXT                 NOT NULL,"
+                + "LASTNAME        TEXT                 NOT NULL,"
+                + "IDENTIFICATION  TEXT                 NOT NULL,"
+                + "ADDRESS         TEXT                 NOT NULL)";
+
+        stmt.executeUpdate("DROP TABLE if exists CLIENTS;");
+        stmt.executeUpdate(query);
+        System.out.println("Table CLIENTS created...");
+    }
+
+    /**
+     * Creates the Transactions table
+     * @throws Exception creates exception message if database failed to be created
+     */
+    public void createTransactionsTable() throws Exception {
+        Connection con = BAMSDBConnection.getSingleBAMSCon();
+        Statement stmt = con.createStatement();
+        String query = "CREATE TABLE TRANSACTIONS"
+                + "(TRANSACTIONID       INTEGER  PRIMARY KEY    AUTOINCREMENT,"
+                + "TOACCOUNTID        INT                     NOT NULL,"
+                + "FROMACCOUNTID       INT                     NOT NULL,"
+                + "TRANSACTIONDETAIL    TEXT                    NOT NULL,"
+                + "VALUE                DECIMAL                 NOT NULL)";
+
+        stmt.executeUpdate("DROP TABLE if exists TRANSACTIONS;");
+        stmt.executeUpdate(query);
+        System.out.println("Table TRANSACTIONS created...");
+    }
+
+    /**
+     * Creates Accounts table
+     * @throws Exception creates exception message if database failed to be created
+     */
+    public void createAccountsTable() throws Exception {
+        Connection con = BAMSDBConnection.getSingleBAMSCon();
+        Statement stmt = con.createStatement();
+        String query = "CREATE TABLE ACCOUNTS"
+                + "(ACCOUNTID           INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "CLIENTID             INT                 NOT NULL,"
+                + "ACCOUNTTYPE          TEXT                NOT NULL,"
+                + "OPENDATE             DATE                NOT NULL,"
+                + "BALANCE              DECIMAL             NOT NULL,"
+                + "ISACTIVE             BIT                 NOT NULL,"
+                + "FOREIGN KEY(CLIENTID) REFERENCES CLIENTS(CLIENTID))";
+
+        stmt.executeUpdate("DROP TABLE if exists ACCOUNTS;");
+        stmt.executeUpdate(query);
+        System.out.println("Table ACCOUNTS created...");
+    }
 
     public void fetchAllClients() {
         cDAO.readAllClients();
@@ -115,6 +115,10 @@ public class BAMSController {
 
     public void fetchAllAccounts() {
         aDAO.readAllAccounts();
+    }
+
+    public void createAccount(int cId, String accountType) {
+        aDAO.createAccount(cId, accountType);
     }
 
     public AccountsModel readAccount(int id) {
