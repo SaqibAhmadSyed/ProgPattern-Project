@@ -93,63 +93,63 @@ public class BAMSController {
         System.out.println("Table ACCOUNTS created...");
     }
 
-    public void fetchAllClients() {
-        cDAO.readAllClients();
+    public List<ClientsModel> fetchAllClients() {
+        return cDAO.readAllClients();
     }
 
-    public void createClient(String fName, String lName, String identification, String address) {
-        cDAO.createClient(fName, lName, identification, address);
+    public boolean createClient(String fName, String lName, String identification, String address) {
+        return cDAO.createClient(fName, lName, identification, address);
     }
 
     public ClientsModel readClients(int id) {
         return cDAO.readClients(id);
     }
 
-    public void updateClientIdentification(int id, String identification) {
-        cDAO.updateClientIdentification(id, identification);
+    public boolean updateClientIdentification(int id, String identification) {
+        return cDAO.updateClientIdentification(id, identification);
     }
 
-    public void updateClientAddress(int id, String address) {
-        cDAO.updateClientAddress(id, address);
+    public boolean updateClientAddress(int id, String address) {
+        return cDAO.updateClientAddress(id, address);
     }
 
-    public void fetchAllAccounts() {
-        aDAO.readAllAccounts();
+    public List<AccountsModel> fetchAllAccounts() {
+        return aDAO.readAllAccounts();
     }
 
-    public void createAccount(int cId, String accountType) {
-        aDAO.createAccount(cId, accountType);
+    public boolean createAccount(int cId, String accountType) {
+        return aDAO.createAccount(cId, accountType);
     }
 
     public AccountsModel readAccount(int id) {
         return aDAO.readAccount(id);
     }
 
-    public void deactivateAccount(int id) {
-        aDAO.deactivateAccount(id);
+    public boolean deactivateAccount(int id) {
+        return aDAO.deactivateAccount(id);
     }
 
-    public void addBalance(int id, double depositAmount) {
-        aDAO.addBalance(id, depositAmount);
+    public boolean addBalance(int id, double depositAmount) {
+        return aDAO.addBalance(id, depositAmount);
     }
 
-    public void fetchAllTransactions() {
-        tDAO.readAllTransaction();
+    public List<TransactionsModel> fetchAllTransactions() {
+        return tDAO.readAllTransaction();
     }
 
     public boolean createTransaction(int toAccNum, int fromAccNum, String detail, double value) {
         return tDAO.createTransaction(toAccNum, fromAccNum, detail, value);
     }
 
-    public void readClientTransaction(int id) {
-        tDAO.readClientTransaction(id);
+    public boolean readClientTransaction(int id) {
+        return tDAO.readClientTransaction(id);
     }
 
     public TransactionsModel readSingleTransaction(int id) {
         return tDAO.readSingleTransaction(id);
     }
 
-    public void cancelTransaction(int id) {
-        tDAO.cancelTransaction(id);
+    public boolean cancelTransaction(int id) {
+        return tDAO.cancelTransaction(id);
     }
 }
