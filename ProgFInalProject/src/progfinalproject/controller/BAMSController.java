@@ -6,12 +6,10 @@ import java.sql.Statement;
 import java.util.List;
 
 import progfinalproject.Interfaces.Accounts;
-import progfinalproject.dbhelper.AccountsDAO;
-import progfinalproject.dbhelper.BAMSDBConnection;
-import progfinalproject.dbhelper.ClientsDAO;
-import progfinalproject.dbhelper.TransactionDAO;
+import progfinalproject.dbhelper.*;
 import progfinalproject.models.AccountsModel;
 import progfinalproject.models.ClientsModel;
+import progfinalproject.models.TellerModel;
 import progfinalproject.models.TransactionsModel;
 
 
@@ -30,6 +28,7 @@ public class BAMSController {
     ClientsDAO cDAO = new ClientsDAO();
     AccountsDAO aDAO = new AccountsDAO();
     TransactionDAO tDAO = new TransactionDAO();
+    TellerDAO tellerDAO = new TellerDAO();
 
 
     public BAMSController() {
@@ -151,5 +150,9 @@ public class BAMSController {
 
     public boolean cancelTransaction(int id) {
         return tDAO.cancelTransaction(id);
+    }
+
+    public TellerModel getCredential() {
+        return tellerDAO.getCredential();
     }
 }

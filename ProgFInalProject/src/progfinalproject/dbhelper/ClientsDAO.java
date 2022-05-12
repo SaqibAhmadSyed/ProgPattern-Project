@@ -11,11 +11,8 @@ import java.util.*;
  *
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
-public class ClientsDAO {
-    
-    public ClientsDAO() {
-        
-    }
+public class ClientsDAO implements Clients{
+
     public boolean createClient(String fName, String lName, String identification, String address) {
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();

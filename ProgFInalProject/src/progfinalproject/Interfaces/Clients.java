@@ -16,7 +16,7 @@ public interface Clients {
      * @param address cilent address
      * @return true if query has been executed
      */
-    public void createClient(String fName, String lName, String identification, String address) throws Exception;
+    public boolean createClient(String fName, String lName, String identification, String address) throws Exception;
 
     /**
      * Displays the database of a selected client
@@ -29,13 +29,13 @@ public interface Clients {
      * Updates the information of the client identification
      * @param identification client identification
      */
-    public void updateClientIdentification(int id, String identification);
+    public boolean updateClientIdentification(int id, String identification);
 
     /**
      * Updates the information of the client address
      * @param address client address
      */
-    public void updateClientAddress(int id, String address);
+    public boolean updateClientAddress(int id, String address);
     
     /**
      * Prints out all the client database from a map sorted by first name

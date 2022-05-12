@@ -11,7 +11,7 @@ public interface Accounts {
      * @param cId Client Id
      * @param accountType Account type
      */
-    public void createAccount(int cId, String accountType);
+    public boolean createAccount(int cId, String accountType);
 
     /**
      * reads an account based on user's account id
@@ -24,14 +24,14 @@ public interface Accounts {
      * deactivated an account only if the accounts balance is 0$. WIll put isActive data to true
      * @param id account id
      */
-    public void deactivateAccount(int id);
+    public boolean deactivateAccount(int id);
 
     /**
      * deposit a desired amount of money into the account
      * @param id account id
      * @param depositAmount amount of money to deposit
      */
-    public void addBalance(int id, double depositAmount);
+    public boolean addBalance(int id, double depositAmount);
 
     /**
      * displays all the account in the database

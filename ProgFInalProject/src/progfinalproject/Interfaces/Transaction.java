@@ -22,7 +22,7 @@ public interface Transaction {
      * reads a list of all transactions from the same sender.
      * @param id transaction id
      */
-    public void readClientTransaction(int id);
+    public boolean readClientTransaction(int id);
 
     /**
      * Reads a specific transaction
@@ -35,7 +35,7 @@ public interface Transaction {
      * Cancels the transactions. the money from the sender is retrieved and the money of the receiver is deducted.
      * @param id transaction id
      */
-    public void cancelTransaction(int id);
+    public boolean cancelTransaction(int id);
 
     /**
      * reads all transactions in database

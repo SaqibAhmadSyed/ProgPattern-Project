@@ -10,15 +10,11 @@ import java.util.List;
 import progfinalproject.Interfaces.Transaction;
 import progfinalproject.models.*;
 
-import javax.swing.plaf.nimbus.State;
-
 /**
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
-public class TransactionDAO {
+public class TransactionDAO implements Transaction{
     public boolean createTransaction(int toAccNum, int fromAccNum, String detail, double value) {
-        boolean isFirstEqual = false; //checks if toAccNum exists in database
-        boolean isSecondEqual = false; //checks if fromAccNum exists in database
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
             String query = "INSERT INTO TRANSACTIONS (TOACCOUNTID, FROMACCOUNTID, TRANSACTIONDETAIL, VALUE) VALUES (?,?,?,?)";
@@ -31,41 +27,27 @@ public class TransactionDAO {
             ResultSet senderBalanceRs = senderStmt.executeQuery("SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNTID=" + fromAccNum);
             Statement updateStmt = con.createStatement();
 
-            while (createRs.next()) {
-//                if(!createRs.next()) {
-//                    System.out.println("need 2 existing ids");
-//                    return false;
-//                }
-                if (createRs.getInt("ACCOUNTID") == toAccNum) {
-                    isFirstEqual = true;
-                }
-                if (createRs.getInt("ACCOUNTID") == fromAccNum) {
-                    isSecondEqual = true;
-                }
+            List<Integer> idList = new ArrayList<>();
+            while(createRs.next()) {
+                idList.add(createRs.getInt("ACCOUNTID"));
             }
 
-            if (isFirstEqual == true || isSecondEqual == true) {
+            if (!idList.contains(toAccNum) || !idList.contains(fromAccNum)) {
+                System.out.println("Id does not exists.");
+                return false;
+            }
+
                 pstmt.setInt(1, toAccNum);
                 pstmt.setInt(2, fromAccNum);
                 pstmt.setString(3, detail);
                 pstmt.setDouble(4, value);
                 pstmt.executeUpdate();
-            } else if (toAccNum == fromAccNum) {
-                System.out.println("Cannot send to same id");
-                return false;
-            } else {
-                System.out.println("Wrong id");
-                return false;
-            }
 
             if (senderBalanceRs.next()) {
                 double currentBalance = senderBalanceRs.getDouble("BALANCE");
                 if (currentBalance >= value) {
                     double total = currentBalance - value;
                     createStmt.executeUpdate("UPDATE ACCOUNTS SET BALANCE=" + total + " WHERE ACCOUNTID=" + fromAccNum);
-                } else {
-                    System.out.println("Not enough money to send");
-                    return false;
                 }
             }
 
@@ -73,8 +55,6 @@ public class TransactionDAO {
                 double currentBalance = receiverBalanceRs.getDouble("BALANCE");
                 double total = currentBalance + value;
                 updateStmt.executeUpdate("UPDATE ACCOUNTS SET BALANCE=" + total + " WHERE ACCOUNTID=" + toAccNum);
-            } else {
-                return false;
             }
             System.out.println("Transaction successfuly created ");
             return true;

@@ -4,7 +4,6 @@ import progfinalproject.Interfaces.Accounts;
 import progfinalproject.models.ClientsModel;
 import progfinalproject.models.AccountsModel;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class AccountsDAO {
+public class AccountsDAO implements Accounts{
     public boolean createAccount(int cId, String accountType) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd/yyyy"); //formatted date
         LocalDate localDate = LocalDate.now();
