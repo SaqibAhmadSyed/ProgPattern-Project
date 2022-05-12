@@ -13,7 +13,7 @@ import progfinalproject.models.*;
 import javax.swing.plaf.nimbus.State;
 
 /**
- * @author xsyed
+ * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class TransactionDAO {
     public boolean createTransaction(int toAccNum, int fromAccNum, String detail, double value) {

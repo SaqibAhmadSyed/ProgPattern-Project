@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.InputMismatchException;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 
 
@@ -19,15 +20,33 @@ import java.util.Scanner;
 public class Menu {
     public static void main(String[] args) throws Exception{
     
-        Locale[] availableLocales = Calendar.getAvailableLocales();
-        Locale locale1 = Locale.ENGLISH;
-        Locale locale2 = Locale.FRENCH;
-        DateFormat df = DateFormat.getDateInstance();
+//        Locale[] availableLocales = Calendar.getAvailableLocales();
+//        Locale locale1 = Locale.ENGLISH;
+//        Locale locale2 = Locale.FRENCH;
+//        DateFormat df = DateFormat.getDateInstance();
         
         Scanner scan = new Scanner(System.in);
         menuPipeline(scan);
     }
-    
+    public static void I18N(String[] args){
+        String language;
+        String country;
+        if (args.length != 2) {
+        language = new String("en");
+        country = new String("US");
+        } else {
+        language = new String(args[0]);
+        country = new String(args[1]);
+        }
+        Locale currentLocale;
+        ResourceBundle messages;
+        currentLocale = new Locale(language, country);
+        messages = ResourceBundle.getBundle("", currentLocale);
+        System.out.println(messages.getString("greetings"));
+        System.out.println(messages.getString("inquiry"));
+        System.out.println(messages.getString("farewell"));
+
+    }
     public static void menuPipeline(Scanner scan) throws Exception{
         boolean validInput = false;
         System.out.println("Welcome to B.A.M.S. or the \"Bank Account Management System\"\n");
