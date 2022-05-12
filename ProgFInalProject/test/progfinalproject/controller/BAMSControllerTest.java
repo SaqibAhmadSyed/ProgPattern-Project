@@ -79,7 +79,8 @@ public class BAMSControllerTest {
         System.out.println("readClients");
         int id = 1;
         BAMSController instance = new BAMSController();
-        ClientsModel expResult = null;
+        instance.createClient("Max", "Deev" , "passport", "1st Street");
+        ClientsModel expResult = new ClientsModel(id,"Max", "Deev", "passport", "1st Street");
         ClientsModel result = instance.readClients(id);
         assertNotNull(result);
        
