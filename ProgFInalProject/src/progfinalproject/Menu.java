@@ -5,12 +5,12 @@
  */
 package progfinalproject;
 
+import progfinalproject.controller.BAMSController;
+import progfinalproject.models.ClientsModel;
+import progfinalproject.models.TellerModel;
+
 import java.text.DateFormat;
-import java.util.Calendar;
-import java.util.InputMismatchException;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 
 
 /**
@@ -24,8 +24,18 @@ public class Menu {
 //        Locale locale1 = Locale.ENGLISH;
 //        Locale locale2 = Locale.FRENCH;
 //        DateFormat df = DateFormat.getDateInstance();
+
+        BAMSController controller = new BAMSController();
+        TellerModel teller = controller.getCredential();
         
         Scanner scan = new Scanner(System.in);
+
+        System.out.println("Welcome to B.A.M.S. or the \"Bank Account Management System\"\n");
+        System.out.println("Below, please enter the type of user you are.");
+        System.out.println("Enter 'T' for Teller, and 'C' for Client.");
+        System.out.println("Finally, if you would like to close the program, enter 'X'.");
+
+
         menuPipeline(scan);
     }
     public static void I18N(String[] args){
@@ -48,23 +58,69 @@ public class Menu {
 
     }
     public static void menuPipeline(Scanner scan) throws Exception{
+        BAMSController controller = new BAMSController();
+        TellerModel teller = controller.getCredential();
+
         boolean validInput = false;
-        System.out.println("Welcome to B.A.M.S. or the \"Bank Account Management System\"\n");
+
         try {
             while (!validInput) {
-                System.out.println("Below, please enter the type of user you are.");
-                System.out.println("Enter 'T' for Teller, and 'C' for Client.");
-                System.out.println("Finally, if you would like to close the program, enter 'X'.");
-
                 char input = scan.next().charAt(0);
 
                 switch (Character.toUpperCase(input)) {
                     case 'T':
-                       tellerPipeline(scan);
+                        boolean isId = false;
+                        boolean isPswd = false;
+                        boolean isThrown = false;
+                        System.out.println("Enter id");
+
+                            try {
+                                int id = scan.nextInt();
+                                while(isId != true) {
+                                    if (id != teller.getTellerId()) {
+                                        System.out.println("Wrong id. Try again");
+                                        id = scan.nextInt();
+                                    } else {
+                                        isId = true;
+                                        break;
+                                    }
+                                }
+                            } catch (InputMismatchException e) {
+                                System.out.println("input only numbers. Try again");
+                                menuPipeline(scan);
+                            }
+
+                        System.out.println("Enter Password");
+                        String pswd = scan.next();
+                        while (isPswd != true) {
+                            if (!pswd.equals(teller.getPswd())) {
+                                System.out.println("Wrong password. Try again");
+                                pswd = scan.next();
+                            } else {
+                                System.out.println("Login Successful \n");
+                                isPswd = true;
+                            }
+                        }
+                        tellerPipeline(scan);
                         validInput = true;
                         break;
+
                     case 'C':
-                        clientPipeline(scan);
+                        controller.createClient("xesus", "christ", "goated", "no adress");
+                        boolean isCId = false;
+                        System.out.println("Enter Client Id");
+                        int cId = scan.nextInt();
+                        while (isCId != true) {
+                            ClientsModel client = controller.readClients(cId);
+                            if (client == null) {
+                                cId = scan.nextInt();
+                            } else {
+                                isCId = true;
+                            }
+                        }
+
+
+                            clientPipeline(scan);
                         validInput = true;
                         break;
                     case 'X':

@@ -33,8 +33,7 @@ public class MainController {
     public static void main(String[] args) throws Exception{
         BAMSController controller = new BAMSController();
 
-//        ClientsModel cM = new ClientsModel();
-//        ClientsDAO cDAO = new ClientsDAO();
+        ClientsDAO cDAO = new ClientsDAO();
         AccountsDAO a = new AccountsDAO();
         TransactionDAO t = new TransactionDAO();
         controller.createClientsTable();
@@ -44,9 +43,9 @@ public class MainController {
 //
 //        cDAO.createClient("xesus", "christ", "goated", "no adress");
 //        cDAO.createClient("jesus", "christ", "goated", "no adress");
-////        cDAO.updateClientAddress(1, "12345");
-////        cDAO.updateClientIdentification(2, "not goated");
-////        System.out.println(cDAO.readClients(1));
+//////        cDAO.updateClientAddress(1, "12345");
+//////        cDAO.updateClientIdentification(2, "not goated");
+//        System.out.println(cDAO.readClients(1));
 ////        cDAO.readAllClients();
 //        a.createAccount(1, "Checking");
 //        a.createAccount(2, "Saving");
