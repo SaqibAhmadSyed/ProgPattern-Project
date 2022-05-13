@@ -135,7 +135,7 @@ public class Menu {
     }
 
     public static void tellerPipeline(Scanner scan) throws Exception{
-
+        BAMSController con = new BAMSController();
         boolean active = true;
         System.out.println("Welcome to the Teller system.");
         System.out.println("Here you'll find all the functions you may need.");
@@ -143,11 +143,13 @@ public class Menu {
         while (active) {
             try {
                 System.out.println("Please select a function (enter the corresponding number):");
-                System.out.println("\t1.  ");
-                System.out.println("\t2.  ");
-                System.out.println("\t3. ");
-                System.out.println("\t4.  ");
-                System.out.println("\t5.  \n");
+                System.out.println("\t1. Fetch all Clients ");
+                System.out.println("\t2. Fetch all Accounts");
+                System.out.println("\t3. Fetch all Transactions");
+                System.out.println("\t4. Cancel Transaction ");
+                System.out.println("\t5. Read Clients\n");
+                System.out.println("\t6. Read Account");
+                System.out.println("\t7. Read Client Transaction\n");
                 System.out.print("Select: ");
                 int selection = scan.nextInt();
 
@@ -156,17 +158,26 @@ public class Menu {
                         menuPipeline(scan);
                         active = false;
                     case 1:
-
+                        System.out.println(con.fetchAllClients());
+                        break;
                     case 2:
-                      
+                        System.out.println(con.fetchAllAccounts());
                         break;
                     case 3:
-                        
+                        System.out.println(con.fetchAllTransactions());
                         break;
                     case 4:
+                        con.cancelTransaction(cId);
                         break;
                     case 5:
+                        System.out.println(con.readClients(cId));
                         break;
+                    case 6:
+                        System.out.println(con.readAccount(cId));
+                        break;
+                    case 7:
+                        con.readClientTransaction(cId);
+                        break;    
                     default:
                 }
             } 
