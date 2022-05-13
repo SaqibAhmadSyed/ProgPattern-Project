@@ -35,11 +35,11 @@ public class AccountsDAO implements Accounts{
         }
     }
 
-    public AccountsModel readAccount(int id) {
+    public AccountsModel readAccount(int clientId) {
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE ACCOUNTID=" + id);
+            ResultSet rs = stmt.executeQuery("SELECT * FROM ACCOUNTS WHERE CLIENTID=" + clientId);
 
             if (rs.next()) {
                 int aId = rs.getInt("ACCOUNTID");
@@ -49,7 +49,7 @@ public class AccountsDAO implements Accounts{
                 double balance = rs.getDouble("BALANCE");
                 boolean isActive = rs.getBoolean("ISACTIVE");
 
-                if (aId == id) {
+                if (cId == clientId) {
                     return new AccountsModel(aId, cId, accType, date, balance, isActive);
                 }
             } else {
@@ -89,28 +89,28 @@ public class AccountsDAO implements Accounts{
         return false;
     }
 
-    public boolean addBalance(int id, double depositAmount) {
-        try {
-            Connection con = BAMSDBConnection.getSingleBAMSCon();
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNTID=" + id);
-
-            if (rs.next()) {
-                double currentAmount = rs.getDouble("BALANCE");
-                double newAmount =  readAccount(id).getBalance() + depositAmount;
-                stmt.executeUpdate("UPDATE ACCOUNTS SET BALANCE=" + newAmount + " WHERE ACCOUNTID=" + id);
-                System.out.println("Successfully added " + depositAmount + "$ in your account");
-                return true;
-            } else {
-                System.out.println("id does not exist");
-                return false;
-            }
-
-        } catch(Exception e) {
-        System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
-        }
-        return false;
-    }
+//    public boolean addBalance(int id, double depositAmount) {
+//        try {
+//            Connection con = BAMSDBConnection.getSingleBAMSCon();
+//            Statement stmt = con.createStatement();
+//            ResultSet rs = stmt.executeQuery("SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNTID=" + id);
+//
+//            if (rs.next()) {
+//                double currentAmount = rs.getDouble("BALANCE");
+//                double newAmount =  readAccount(id).getBalance() + depositAmount;
+//                stmt.executeUpdate("UPDATE ACCOUNTS SET BALANCE=" + newAmount + " WHERE ACCOUNTID=" + id);
+//                System.out.println("Successfully added " + depositAmount + "$ in your account");
+//                return true;
+//            } else {
+//                System.out.println("id does not exist");
+//                return false;
+//            }
+//
+//        } catch(Exception e) {
+//        System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
+//        }
+//        return false;
+//    }
     public List<AccountsModel> readAllAccounts() {
         List<AccountsModel> accountList = new ArrayList<>();
 

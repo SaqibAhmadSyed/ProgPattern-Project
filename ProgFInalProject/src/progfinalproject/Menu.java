@@ -18,7 +18,7 @@ import java.util.*;
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class Menu {
-    public static int cId;
+    static int cId;
     public static void main(String[] args) throws Exception{
     
 //        Locale[] availableLocales = Calendar.getAvailableLocales();
@@ -108,6 +108,7 @@ public class Menu {
 
                     case 'C':
                         controller.createClient("xesus", "christ", "goated", "no adress");
+                        controller.createAccount(1, "Checking");
                         boolean isCId = false;
                         System.out.println("Enter Client Id");
                         cId = scan.nextInt();
@@ -119,8 +120,6 @@ public class Menu {
                                 isCId = true;
                             }
                         }
-
-                            
                             clientPipeline(scan);
                             System.out.println(cId);
                         validInput = true;
@@ -136,7 +135,7 @@ public class Menu {
     }
 
     public static void tellerPipeline(Scanner scan) throws Exception{
-        
+
         boolean active = true;
         System.out.println("Welcome to the Teller system.");
         System.out.println("Here you'll find all the functions you may need.");
@@ -158,7 +157,6 @@ public class Menu {
                         active = false;
                     case 1:
 
-                        break;
                     case 2:
                       
                         break;
@@ -187,7 +185,8 @@ public class Menu {
     public static void clientPipeline(Scanner scan) throws Exception{
         BAMSController con = new BAMSController();
         boolean active = true;
-        System.out.println("Welcome to the Client system.");
+        System.out.println(cId);
+        System.out.println("Welcome to the Client system " + con.readClients(cId).getFirstName() + " .");
         System.out.println("Here you'll find all the functions you may need.");
         System.out.println("If at any point you want to return to the welcome menu, simply type '0' in the input field\n");
         while (active) {
@@ -195,11 +194,12 @@ public class Menu {
                 System.out.println("Please select a function (enter the corresponding number):");
                 System.out.println("\t1. Read Client ");
                 System.out.println("\t2. Read Client Transaction ");
-                System.out.println("\t3. Read Single Transaction");
-                System.out.println("\t4. Read Account");
+//                System.out.println("\t3. Read Single Transaction");
+                System.out.println("\t3. Read Account");
                 
                 System.out.print("Select: ");
                 int selection = scan.nextInt();
+                System.out.println("");
 
                 switch (selection) {
                     case 0:
@@ -207,16 +207,13 @@ public class Menu {
                         active = false;
                         break;
                     case 1:
-                       con.readClients(1);
+                        System.out.println(con.readClients(cId));
                         break;
                     case 2:
-                       con.readClientTransaction(1);
+                        con.readClientTransaction(cId);
                         break;
                     case 3:
-                        con.readSingleTransaction(1);
-                        break;
-                    case 4:
-                        con.readAccount(1);
+                        System.out.println(con.readAccount(cId));
                         break;
                     default:
                 }
@@ -232,5 +229,4 @@ public class Menu {
             }
         }
     }
-    
 }

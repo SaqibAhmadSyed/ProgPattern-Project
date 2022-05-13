@@ -27,13 +27,6 @@ public interface Accounts {
     public boolean deactivateAccount(int id);
 
     /**
-     * deposit a desired amount of money into the account
-     * @param id account id
-     * @param depositAmount amount of money to deposit
-     */
-    public boolean addBalance(int id, double depositAmount);
-
-    /**
      * displays all the account in the database
      */
     public List<AccountsModel> readAllAccounts();

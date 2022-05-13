@@ -72,10 +72,6 @@ public class TransactionDAO implements Transaction{
             ResultSet rs = stmt.executeQuery("SELECT * FROM TRANSACTIONS WHERE FROMACCOUNTID=" + id);
 
             while (rs.next()) {
-                if (!rs.next()) {
-                    System.out.println("Error");
-                    return false;
-                }
                 int tId = rs.getInt("TRANSACTIONID");
                 int toAccId = rs.getInt("TOACCOUNTID");
                 int fromAccId = rs.getInt("FROMACCOUNTID");

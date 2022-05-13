@@ -128,10 +128,6 @@ public class BAMSController {
         return aDAO.deactivateAccount(id);
     }
 
-    public boolean addBalance(int id, double depositAmount) {
-        return aDAO.addBalance(id, depositAmount);
-    }
-
     public List<TransactionsModel> fetchAllTransactions() {
         return tDAO.readAllTransaction();
     }
