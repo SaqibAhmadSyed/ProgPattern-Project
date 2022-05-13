@@ -157,34 +157,34 @@ public class BAMSControllerTest {
         assertNotNull(result);
     }
 
-    /**
-     * Test of deactivateAccount method, of class BAMSController.
-     */
-    @Test
-    public void testDeactivateAccount() {
-        System.out.println("deactivateAccount");
-        int id = 1;
-        BAMSController instance = new BAMSController();
-        instance.addBalance(id, 1000.0);
-        boolean expResult = true;
-        boolean result = instance.deactivateAccount(id);
-        assertEquals(expResult, result);
-    
-    }
-
-    /**
-     * Test of addBalance method, of class BAMSController.
-     */
-    @Test
-    public void testAddBalance() {
-        System.out.println("addBalance");
-        int id = 1;
-        double depositAmount = 0.0;
-        BAMSController instance = new BAMSController();
-        boolean expResult = true;
-        boolean result = instance.addBalance(id, depositAmount);
-        assertEquals(expResult, result);
-    }
+//    /**
+//     * Test of deactivateAccount method, of class BAMSController.
+//     */
+//    @Test
+//    public void testDeactivateAccount() {
+//        System.out.println("deactivateAccount");
+//        int id = 1;
+//        BAMSController instance = new BAMSController();
+//        instance.addBalance(id, 1000.0);
+//        boolean expResult = true;
+//        boolean result = instance.deactivateAccount(id);
+//        assertEquals(expResult, result);
+//    
+//    }
+//
+//    /**
+//     * Test of addBalance method, of class BAMSController.
+//     */
+//    @Test
+//    public void testAddBalance() {
+//        System.out.println("addBalance");
+//        int id = 1;
+//        double depositAmount = 0.0;
+//        BAMSController instance = new BAMSController();
+//        boolean expResult = true;
+//        boolean result = instance.addBalance(id, depositAmount);
+//        assertEquals(expResult, result);
+//    }
 
     /**
      * Test of fetchAllTransactions method, of class BAMSController.
