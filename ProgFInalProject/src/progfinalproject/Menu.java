@@ -18,6 +18,7 @@ import java.util.*;
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class Menu {
+    public static int cId;
     public static void main(String[] args) throws Exception{
     
 //        Locale[] availableLocales = Calendar.getAvailableLocales();
@@ -109,7 +110,7 @@ public class Menu {
                         controller.createClient("xesus", "christ", "goated", "no adress");
                         boolean isCId = false;
                         System.out.println("Enter Client Id");
-                        int cId = scan.nextInt();
+                        cId = scan.nextInt();
                         while (isCId != true) {
                             ClientsModel client = controller.readClients(cId);
                             if (client == null) {
@@ -119,8 +120,9 @@ public class Menu {
                             }
                         }
 
-
+                            
                             clientPipeline(scan);
+                            System.out.println(cId);
                         validInput = true;
                         break;
                     case 'X':
@@ -183,7 +185,7 @@ public class Menu {
     }
     
     public static void clientPipeline(Scanner scan) throws Exception{
-        
+        BAMSController con = new BAMSController();
         boolean active = true;
         System.out.println("Welcome to the Client system.");
         System.out.println("Here you'll find all the functions you may need.");
@@ -191,11 +193,11 @@ public class Menu {
         while (active) {
             try {
                 System.out.println("Please select a function (enter the corresponding number):");
-                System.out.println("\t1.  ");
-                System.out.println("\t2.  ");
-                System.out.println("\t3. ");
-                System.out.println("\t4.  ");
-                System.out.println("\t5.  \n");
+                System.out.println("\t1. Read Client ");
+                System.out.println("\t2. Read Client Transaction ");
+                System.out.println("\t3. Read Single Transaction");
+                System.out.println("\t4. Read Account");
+                
                 System.out.print("Select: ");
                 int selection = scan.nextInt();
 
@@ -203,18 +205,18 @@ public class Menu {
                     case 0:
                         menuPipeline(scan);
                         active = false;
+                        break;
                     case 1:
-
+                       con.readClients(1);
                         break;
                     case 2:
-                      
+                       con.readClientTransaction(1);
                         break;
                     case 3:
-                        
+                        con.readSingleTransaction(1);
                         break;
                     case 4:
-                        break;
-                    case 5:
+                        con.readAccount(1);
                         break;
                     default:
                 }
