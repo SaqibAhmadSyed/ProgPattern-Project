@@ -147,7 +147,7 @@ public class Menu {
                 System.out.println("\t2. Fetch all Accounts");
                 System.out.println("\t3. Fetch all Transactions");
                 System.out.println("\t4. Cancel Transaction ");
-                System.out.println("\t5. Read Clients\n");
+                System.out.println("\t5. Read Clients");
                 System.out.println("\t6. Read Account");
                 System.out.println("\t7. Read Client Transaction\n");
                 System.out.print("Select: ");
