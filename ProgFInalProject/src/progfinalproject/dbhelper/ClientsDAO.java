@@ -48,7 +48,6 @@ public class ClientsDAO implements Clients{
 
                 return new ClientsModel(cId, fName, lName, identification, address);
             } else {
-                System.out.println("id does not exist");
                 return null;
             }
         } catch(Exception e) {
