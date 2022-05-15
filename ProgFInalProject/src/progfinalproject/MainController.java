@@ -36,10 +36,10 @@ public class MainController {
         ClientsDAO cDAO = new ClientsDAO();
         AccountsDAO a = new AccountsDAO();
         TransactionDAO t = new TransactionDAO();
-        controller.createClientsTable();
-        controller.createAccountsTable();
-        controller.createTransactionsTable();
-        createTellerTable();
+//        controller.createClientsTable();
+//        controller.createAccountsTable();
+//        controller.createTransactionsTable();
+//        createTellerTable();
 //
 //        cDAO.createClient("xesus", "christ", "goated", "no adress");
 //        cDAO.createClient("jesus", "christ", "goated", "no adress");
@@ -75,7 +75,7 @@ public class MainController {
 //        System.out.println(controller.readSingleTransaction(1));
 //        System.out.println(controller.readAccount(2));
 
-        System.out.println(controller.getCredential());
+//        System.out.println(controller.getCredential());
     }
 
     public static void createTellerTable() throws Exception {

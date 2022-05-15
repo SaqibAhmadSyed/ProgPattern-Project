@@ -14,13 +14,13 @@ import java.util.*;
 
 
 /**
- *
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class Menu {
     static int cId;
-    public static void main(String[] args) throws Exception{
-    
+
+    public static void main(String[] args) throws Exception {
+
 //        Locale[] availableLocales = Calendar.getAvailableLocales();
 //        Locale locale1 = Locale.ENGLISH;
 //        Locale locale2 = Locale.FRENCH;
@@ -28,113 +28,104 @@ public class Menu {
 
         BAMSController controller = new BAMSController();
         TellerModel teller = controller.getCredential();
-        
+
         Scanner scan = new Scanner(System.in);
+
+
+        menuPipeline(scan);
+    }
+
+    //    public static void I18N(String[] args){
+//        String language;
+//        String country;
+//        if (args.length != 2) {
+//        language = new String("en");
+//        country = new String("US");
+//        } else {
+//        language = new String(args[0]);
+//        country = new String(args[1]);
+//        }
+//        Locale currentLocale;
+//        ResourceBundle messages;
+//        currentLocale = new Locale(language, country);
+//        messages = ResourceBundle.getBundle("", currentLocale);
+//        System.out.println(messages.getString("greetings"));
+//        System.out.println(messages.getString("inquiry"));
+//        System.out.println(messages.getString("farewell"));
+//
+//    }
+    public static void menuPipeline(Scanner scan) throws Exception {
+        BAMSController controller = new BAMSController();
 
         System.out.println("Welcome to B.A.M.S. or the \"Bank Account Management System\"\n");
         System.out.println("Below, please enter the type of user you are.");
         System.out.println("Enter 'T' for Teller, and 'C' for Client.");
         System.out.println("Finally, if you would like to close the program, enter 'X'.");
 
-
-        menuPipeline(scan);
-    }
-    public static void I18N(String[] args){
-        String language;
-        String country;
-        if (args.length != 2) {
-        language = new String("en");
-        country = new String("US");
-        } else {
-        language = new String(args[0]);
-        country = new String(args[1]);
-        }
-        Locale currentLocale;
-        ResourceBundle messages;
-        currentLocale = new Locale(language, country);
-        messages = ResourceBundle.getBundle("", currentLocale);
-        System.out.println(messages.getString("greetings"));
-        System.out.println(messages.getString("inquiry"));
-        System.out.println(messages.getString("farewell"));
-
-    }
-    public static void menuPipeline(Scanner scan) throws Exception{
-        BAMSController controller = new BAMSController();
-        TellerModel teller = controller.getCredential();
-
         boolean validInput = false;
+        while (!validInput) {
+            char input = scan.next().charAt(0);
 
-        try {
-            while (!validInput) {
-                char input = scan.next().charAt(0);
+            switch (Character.toUpperCase(input)) {
+                case 'T':
+                    boolean isId = false;
+                    boolean isPswd = false;
+                    TellerModel teller = controller.getCredential();
 
-                switch (Character.toUpperCase(input)) {
-                    case 'T':
-                        boolean isId = false;
-                        boolean isPswd = false;
-                        boolean isThrown = false;
-                        System.out.println("Enter id");
-
-                            try {
-                                int id = scan.nextInt();
-                                while(isId != true) {
-                                    if (id != teller.getTellerId()) {
-                                        System.out.println("Wrong id. Try again");
-                                        id = scan.nextInt();
-                                    } else {
-                                        isId = true;
-                                        break;
-                                    }
-                                }
-                            } catch (InputMismatchException e) {
-                                System.out.println("input only numbers. Try again");
-                                menuPipeline(scan);
-                            }
-
-                        System.out.println("Enter Password");
-                        String pswd = scan.next();
-                        while (isPswd != true) {
-                            if (!pswd.equals(teller.getPswd())) {
-                                System.out.println("Wrong password. Try again");
-                                pswd = scan.next();
-                            } else {
-                                System.out.println("Login Successful \n");
-                                isPswd = true;
-                            }
-                        }
-                        tellerPipeline(scan);
-                        validInput = true;
-                        break;
-
-                    case 'C':
-                        controller.createClient("xesus", "christ", "goated", "no adress");
-                        controller.createAccount(1, "Checking");
-                        boolean isCId = false;
-                        System.out.println("Enter Client Id");
-                        cId = scan.nextInt();
-                        while (isCId != true) {
-                            ClientsModel client = controller.readClients(cId);
-                            if (client == null) {
-                                cId = scan.nextInt();
-                            } else {
+//                    System.out.println("Enter Id");
+//                    while (isId != true) {
+//                        try {
+//                            String stringId = scan.next();
+//                            if (Integer.parseInt(stringId) == teller.getTellerId()) {
+//                                isId = true;
+//                            } else {
+//                                System.out.println("id invalid, try again");
+//                            }
+//                        } catch (NumberFormatException e) {
+//                            System.out.println("Please input only numbers.");
+//                        }
+//                    }
+//
+//                    System.out.println("Enter password");
+//                    while (isPswd != true) {
+//                        String pswd = scan.next();
+//                        if (pswd.equals(teller.getPswd())) {
+//                            isPswd = true;
+//                        } else {
+//                            System.out.println("wrong password, try again");
+//                        }
+//                    }
+                    tellerPipeline(scan);
+                    validInput = true;
+                    break;
+                case 'C':
+                    boolean isCId = false;
+                    System.out.println("Enter Client Id");
+                    while (isCId != true) {
+                        try {
+                            String stringCId = scan.next();
+                            ClientsModel client = controller.readClients(Integer.parseInt(stringCId));
+                            if (client != null) {
+                                cId = Integer.parseInt(stringCId);
                                 isCId = true;
                             }
+                        } catch (NumberFormatException e) {
+                            System.out.println("Please input only numbers.");
                         }
-                            clientPipeline(scan);
-                            System.out.println(cId);
-                        validInput = true;
-                        break;
-                    case 'X':
-                        System.exit(0);
-                    default:
-                        System.out.println("Invalid Value. Please try again");
-                }
+                    }
+                    clientPipeline(scan);
+                    validInput = true;
+                    break;
+                case 'X':
+                    System.exit(0);
+                default:
+                    System.out.println("Wrong input, Try again.");
             }
         }
-        catch(InputMismatchException e) {System.out.println("Invalid Value. Please try again");}
+
     }
 
-    public static void tellerPipeline(Scanner scan) throws Exception{
+    public static void tellerPipeline(Scanner scan) throws Exception {
         BAMSController con = new BAMSController();
         boolean active = true;
         System.out.println("Welcome to the Teller system.");
@@ -158,15 +149,27 @@ public class Menu {
                         menuPipeline(scan);
                         active = false;
                     case 1:
-                        System.out.println(con.fetchAllClients());
+                        con.fetchAllClients();
                         break;
                     case 2:
-                        System.out.println(con.fetchAllAccounts());
+                        con.fetchAllAccounts();
                         break;
                     case 3:
-                        System.out.println(con.fetchAllTransactions());
+                        con.fetchAllTransactions();
                         break;
                     case 4:
+                        System.out.println("Enter transaction id");
+                        boolean isTId = false;
+                        while (isTId != true) {
+                            try {
+                                String stringId = scan.next();
+                                if (con.readSingleTransaction(Integer.parseInt(stringId)) != null) {
+                                    isTId = true;
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println("Please input only numbers.");
+                            }
+                        }
                         con.cancelTransaction(cId);
                         break;
                     case 5:
@@ -177,23 +180,22 @@ public class Menu {
                         break;
                     case 7:
                         con.readClientTransaction(cId);
-                        break;    
+                        break;
                     default:
                 }
-            } 
-            catch (InputMismatchException ime) {
+            } catch (InputMismatchException ime) {
                 System.out.println("Invalid value. Please try again.");
                 scan.nextLine();
             } // Handles SQLite exceptions such as not respecting the PK constraint
-            catch(org.sqlite.SQLiteException e) {
+            catch (org.sqlite.SQLiteException e) {
                 System.out.println(e.toString());
                 System.out.println("There was a Database Error. Please try again with different values");
                 scan.nextLine();
             }
         }
     }
-    
-    public static void clientPipeline(Scanner scan) throws Exception{
+
+    public static void clientPipeline(Scanner scan) throws Exception {
         BAMSController con = new BAMSController();
         boolean active = true;
         System.out.println(cId);
@@ -207,7 +209,7 @@ public class Menu {
                 System.out.println("\t2. Read Client Transaction ");
 //                System.out.println("\t3. Read Single Transaction");
                 System.out.println("\t3. Read Account");
-                
+
                 System.out.print("Select: ");
                 int selection = scan.nextInt();
                 System.out.println("");
@@ -228,16 +230,23 @@ public class Menu {
                         break;
                     default:
                 }
-            } 
-            catch (InputMismatchException ime) {
+            } catch (InputMismatchException ime) {
                 System.out.println("Invalid value. Please try again.");
                 scan.nextLine();
             } // Handles SQLite exceptions such as not respecting the PK constraint
-            catch(org.sqlite.SQLiteException e) {
+            catch (org.sqlite.SQLiteException e) {
                 System.out.println(e.toString());
                 System.out.println("There was a Database Error. Please try again with different values");
                 scan.nextLine();
             }
         }
+    }
+
+    public static void checkClient(Scanner scan) {
+
+    }
+
+    public static boolean isLetterOrChar(String name) {
+        return name.matches("\\b([A-ZÀ-ÿ][-,a-z. ']+[ ]*)+");
     }
 }
