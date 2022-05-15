@@ -53,7 +53,6 @@ public class AccountsDAO implements Accounts{
                     return new AccountsModel(aId, cId, accType, date, balance, isActive);
                 }
             } else {
-                System.out.println("id does not exist");
                 return null;
             }
             return null;
@@ -80,7 +79,6 @@ public class AccountsDAO implements Accounts{
                     return true;
                 }
             } else {
-                System.out.println("id does not exist");
                 return false;
             }
         } catch(Exception e) {

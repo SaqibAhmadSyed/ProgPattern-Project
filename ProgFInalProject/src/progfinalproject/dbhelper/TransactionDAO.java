@@ -33,7 +33,6 @@ public class TransactionDAO implements Transaction{
             }
 
             if (!idList.contains(toAccNum) || !idList.contains(fromAccNum)) {
-                System.out.println("Id does not exists.");
                 return false;
             }
 
@@ -136,7 +135,6 @@ public class TransactionDAO implements Transaction{
                     double total = currentBalance + receiverBal;
                     receiverStmt.executeUpdate("UPDATE ACCOUNTS SET BALANCE=" + total + " WHERE ACCOUNTID=" + fromAccId);
                 } else {
-                    System.out.println("id does not exist");
                     return false;
                 }
                 ResultSet senderRs = stmt.executeQuery("SELECT BALANCE FROM ACCOUNTS WHERE ACCOUNTID=" + toAccId);
@@ -145,11 +143,9 @@ public class TransactionDAO implements Transaction{
                     double total = senderBal - currentBalance;
                     senderStmt.executeUpdate("UPDATE ACCOUNTS SET BALANCE=" + total + " WHERE ACCOUNTID=" + toAccId);
                 } else {
-                    System.out.println("id does not exist");
                     return false;
                 }
             } else {
-                System.out.println("id does not exist");
                 return false;
             }
             stmt.executeUpdate("DELETE FROM TRANSACTIONS WHERE TRANSACTIONID=" + id);

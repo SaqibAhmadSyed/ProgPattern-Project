@@ -6,6 +6,7 @@
 package progfinalproject;
 
 import progfinalproject.controller.BAMSController;
+import progfinalproject.models.AccountsModel;
 import progfinalproject.models.ClientsModel;
 import progfinalproject.models.TellerModel;
 
@@ -16,28 +17,13 @@ import java.util.*;
 /**
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
-public class Menu {
-    static int cId;
 
-    public static void main(String[] args) throws Exception {
-
-//        Locale[] availableLocales = Calendar.getAvailableLocales();
-//        Locale locale1 = Locale.ENGLISH;
-//        Locale locale2 = Locale.FRENCH;
-//        DateFormat df = DateFormat.getDateInstance();
-
-        BAMSController controller = new BAMSController();
-        TellerModel teller = controller.getCredential();
-
-        Scanner scan = new Scanner(System.in);
-        menuPipeline(scan);
-    }
-
-    public static ResourceBundle I18N(Scanner scan) {
+class Factory {
+    public static ResourceBundle I18N(String choice) {
         Locale locale = new Locale("", "");
+        Scanner scan = new Scanner(System.in);
 
-        System.out.println("Select 1 for english or 2 for french.");
-        switch (scan.nextLine()) {
+        switch (choice) {
             case "1":
                 locale = new Locale("en", "US");
                 break;
@@ -49,17 +35,53 @@ public class Menu {
         }
         return ResourceBundle.getBundle("progfinalproject/MessagesBundle", locale);
     }
+    public static ResourceBundle getRes(String choice) {
+        return I18N(choice);
+    }
+}
 
-    public static void menuPipeline(Scanner scan) throws Exception {
+public class Menu {
+
+    static String i18nChoice;
+    static int cId;
+
+    public static void main(String[] args) throws Exception {
         BAMSController controller = new BAMSController();
-        ResourceBundle res = I18N(scan);
+        TellerModel teller = controller.getCredential();
+        Scanner scan = new Scanner(System.in);
+
+        System.out.println("Select 1 for english or 2 for french.");
+        i18nChoice = scan.next();
+        ResourceBundle res =  Factory.getRes(i18nChoice);
+
+        menuPipeline(scan, res);
+    }
+
+//    public static ResourceBundle I18N(Scanner scan) {
+//        Locale locale = new Locale("", "");
+//
+//        System.out.println("Select 1 for english or 2 for french.");
+//        switch (scan.nextLine()) {
+//            case "1":
+//                locale = new Locale("en", "US");
+//                break;
+//            case "2":
+//                locale = new Locale("fr", "FR");
+//                break;
+//            default:
+//                System.out.println("select a valid choice.");
+//        }
+//        return ResourceBundle.getBundle("progfinalproject/MessagesBundle", locale);
+//    }
+
+    public static void menuPipeline(Scanner scan, ResourceBundle res) throws Exception {
+        BAMSController controller = new BAMSController();
 
 
-//        System.out.println("Welcome to B.A.M.S. or the \"Bank Account Management System\"\n");
-//        System.out.println("Below, please enter the type of user you are.");
-//        System.out.println("Enter 'T' for Teller, and 'C' for Client.");
-//        System.out.println("Finally, if you would like to close the program, enter 'X'.");
-        System.out.println(res.getString("greetings"));
+        System.out.println(res.getString("key1"));
+        System.out.println(res.getString("key2"));
+        System.out.println(res.getString("key3"));
+        System.out.println(res.getString("key4"));
 
         boolean validInput = false;
         while (!validInput) {
@@ -71,39 +93,39 @@ public class Menu {
                     boolean isPswd = false;
                     TellerModel teller = controller.getCredential();
 
-                    System.out.println("Enter Id. To exit teller input, select 0");
+                    System.out.println(res.getString("key5"));
                     while (isId != true) {
                         try {
                             String stringId = scan.next();
                             if (Integer.parseInt(stringId) == teller.getTellerId()) {
                                 isId = true;
                             } else if (stringId.equals("0")) {
-                                menuPipeline(scan);
+                                menuPipeline(scan, res);
                             } else {
-                                System.out.println("id invalid, try again");
+                                System.out.println(res.getString("key6"));
                             }
                         } catch (NumberFormatException e) {
-                            System.out.println("Please input only numbers.");
+                            System.out.println(res.getString("key7"));
                         }
                     }
 
-                    System.out.println("Enter password. To exist teller input, select 0");
+                    System.out.println(res.getString("key29"));
                     while (isPswd != true) {
                         String pswd = scan.next();
                         if (pswd.equals(teller.getPswd())) {
                             isPswd = true;
                         } else if (pswd.equals("0")) {
-                            menuPipeline(scan);
+                            menuPipeline(scan, res);
                         } else {
-                            System.out.println("wrong password, try again");
+                            System.out.println(res.getString("key8"));
                         }
                     }
-                    tellerPipeline(scan);
+                    tellerPipeline(scan, res);
                     validInput = true;
                     break;
                 case 'C':
                     boolean isCId = false;
-                    System.out.println("Enter Client Id. To exit client input, select 0");
+                    System.out.println(res.getString("key9"));
                     while (isCId != true) {
                         try {
                             String stringCId = scan.next();
@@ -112,46 +134,54 @@ public class Menu {
                                 cId = Integer.parseInt(stringCId);
                                 isCId = true;
                             } else if (stringCId.equals("0")) {
-                                menuPipeline(scan);
+                                menuPipeline(scan, res);
                             }
                         } catch (NumberFormatException e) {
-                            System.out.println("Please input only numbers.");
+                            System.out.println(res.getString("key7"));
                         }
                     }
-                    clientPipeline(scan);
+                    clientPipeline(scan, res);
                     validInput = true;
                     break;
                 case 'X':
                     System.exit(0);
                 default:
-                    System.out.println("Wrong input, Try again.");
+                    System.out.println(res.getString("key30"));
             }
         }
 
     }
 
-    public static void tellerPipeline(Scanner scan) throws Exception {
+    public static void tellerPipeline(Scanner scan, ResourceBundle res) throws Exception {
         BAMSController con = new BAMSController();
+        res =  Factory.getRes(i18nChoice);
         boolean active = true;
-        System.out.println("Welcome to the Teller system.");
-        System.out.println("Here you'll find all the functions you may need.");
-        System.out.println("If at any point you want to return to the welcome menu, simply type '0' in the input field\n");
+
+        System.out.println(res.getString("key10"));
+        System.out.println(res.getString("key11"));
+        System.out.println(res.getString("key12"));
         while (active) {
             try {
-                System.out.println("Please select a function (enter the corresponding number):");
-                System.out.println("\t1. Fetch all Clients ");
-                System.out.println("\t2. Fetch all Accounts");
-                System.out.println("\t3. Fetch all Transactions");
-                System.out.println("\t4. Cancel Transaction ");
-                System.out.println("\t5. Read Clients");
-                System.out.println("\t6. Read Account");
-                System.out.println("\t7. Read Client Transaction\n");
-                System.out.print("Select: ");
+                System.out.println(res.getString("key13"));
+                System.out.println("\t1. " + res.getString("key14"));
+                System.out.println("\t2. " + res.getString("key15"));
+                System.out.println("\t3. " + res.getString("key16"));
+                System.out.println("\t4. " + res.getString("key17"));
+                System.out.println("\t5. " + res.getString("key18"));
+                System.out.println("\t6. " + res.getString("key19"));
+                System.out.println("\t7. " + res.getString("key20"));
+                System.out.println("\t8. " + res.getString("key31"));
+                System.out.println("\t9. " + res.getString("key32"));
+                System.out.println("\t10. " + res.getString("key33"));
+                System.out.println("\t11. " + res.getString("key34"));
+                System.out.println("\t12. " + res.getString("key45"));
+                System.out.println("\t13. " + res.getString("key46") + "\n");
+                System.out.print(res.getString("key21"));
                 int selection = scan.nextInt();
 
                 switch (selection) {
                     case 0:
-                        menuPipeline(scan);
+                        menuPipeline(scan, res);
                         active = false;
                     case 1:
                         con.fetchAllClients();
@@ -163,7 +193,7 @@ public class Menu {
                         con.fetchAllTransactions();
                         break;
                     case 4:
-                        System.out.println("Enter transaction id");
+                        System.out.println(res.getString("key22"));
                         boolean isTId = false;
                         while (isTId != true) {
                             try {
@@ -171,16 +201,18 @@ public class Menu {
                                 if (con.readSingleTransaction(Integer.parseInt(stringTrId)) != null) {
                                     con.cancelTransaction(Integer.parseInt(stringTrId));
                                     isTId = true;
+                                } else if (stringTrId.equals("0")) {
+                                    tellerPipeline(scan, res);
                                 } else {
-                                    System.out.println("id does not exist, Try again.");
+                                    System.out.println(res.getString("key6"));
                                 }
                             } catch (NumberFormatException e) {
-                                System.out.println("Please input only numbers.");
+                                System.out.println(res.getString("key7"));
                             }
                         }
                         break;
                     case 5:
-                        System.out.println("Enter client id");
+                        System.out.println(res.getString("key23"));
                         boolean isCId = false;
                         while (isCId != true) {
                             try {
@@ -188,16 +220,18 @@ public class Menu {
                                 if (con.readClients(Integer.parseInt(stringCId)) != null) {
                                     System.out.println(con.readClients(Integer.parseInt(stringCId)));
                                     isCId = true;
+                                } else if (stringCId.equals("0")){
+                                    tellerPipeline(scan, res);
                                 } else {
-                                    System.out.println("id does not exist. Try again.");
+                                    System.out.println(res.getString("key6"));
                                 }
                             } catch (NumberFormatException e) {
-                                System.out.println("Please input only numbers.");
+                                System.out.println(res.getString("key7"));
                             }
                         }
                         break;
                     case 6:
-                        System.out.println("Enter account id");
+                        System.out.println(res.getString("key24"));
                         boolean isAId = false;
                         while (isAId != true) {
                             try {
@@ -205,62 +239,241 @@ public class Menu {
                                 if (con.readAccount(Integer.parseInt(stringAId)) != null) {
                                     System.out.println(con.readAccount(Integer.parseInt(stringAId)));
                                     isAId = true;
+                                } else if (stringAId.equals("0")) {
+                                    tellerPipeline(scan, res);
+                                } else {
+                                    System.out.println(res.getString("6"));
                                 }
                             } catch (NumberFormatException e) {
-                                System.out.println("Please input only numbers.");
+                                System.out.println(res.getString("key7"));
                             }
                         }
                         break;
                     case 7:
                         boolean isTrId = false;
-                        System.out.println("Enter Client id");
+                        System.out.println(res.getString("key23"));
                         while (isTrId != true) {
                             try {
                                 String stringTrId = scan.next();
                                 if (con.readAccount(Integer.parseInt(stringTrId)) != null) {
                                     System.out.println(con.readClientTransaction(Integer.parseInt(stringTrId)));
                                     isTrId = true;
+                                } else if (stringTrId.equals("0")) {
+                                    tellerPipeline(scan, res);tellerPipeline(scan, res);
+                                } else {
+                                    System.out.println(res.getString("key6"));
                                 }
                             } catch (NumberFormatException e) {
-                                System.out.println("Please input only numbers.");
+                                System.out.println(res.getString("key7"));
                             }
                         }
                         break;
+                    case 8:
+                        boolean isAccId = false;
+                        System.out.println(res.getString("key24"));
+                        while (isAccId != true) {
+                            try {
+                                String stringAccId = scan.next();
+                                if (con.readAccount(Integer.parseInt(stringAccId)) != null) {
+                                    System.out.println(con.deactivateAccount(Integer.parseInt(stringAccId)));
+                                    isAccId = true;
+                                } else if (stringAccId.equals("0")) {
+                                    tellerPipeline(scan, res);tellerPipeline(scan, res);
+                                } else {
+                                    System.out.println(res.getString("key6"));
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println(res.getString("key7"));
+                            }
+                        }
+                        break;
+                    case 9:
+                        System.out.print(res.getString("key35") + " ");
+                        String fName = scan.next();
+                        System.out.print(res.getString("key36") + " ");
+                        String lName = scan.next();
+                        System.out.print(res.getString("key37") + " ");
+                        String identification = scan.next();
+                        System.out.println(res.getString("key38") + " ");
+                        String address = scan.next();
+                        con.createClient(fName, lName, identification, address);
+                        break;
+                    case 10:
+                        boolean isClientCreated = false;
+                        System.out.println(res.getString("key9"));
+                        while (isClientCreated != true) {
+                            try {
+                                String clientId = scan.next();
+                                ClientsModel client = con.readClients(Integer.parseInt(clientId));
+                                if (client != null) {
+                                    System.out.println(res.getString("key39") + " ");
+                                    while (isClientCreated != true) {
+                                        String accType = scan.next().toLowerCase();
+                                        if (accType.equals("checking") || accType.equals("savings")) {
+                                            con.createAccount(Integer.parseInt(clientId), accType);
+                                            isClientCreated = true;
+                                        } else if (accType.equals("0")) {
+                                            tellerPipeline(scan, res);
+                                        } else {
+                                            System.out.println(res.getString("key30"));
+                                        }
+                                    }
+                                    isClientCreated = true;
+                                } else if (clientId.equals("0")) {
+                                    tellerPipeline(scan, res);
+                                } else {
+                                    System.out.println(res.getString("key6"));
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println(res.getString("key7"));
+                            }
+                        }
+                        break;
+                    case 11:
+                        boolean isDestinationId = false;
+                        boolean isSenderId = false;
+                        boolean isValue = false;
+
+                        String destinationId = "";
+                        String senderId = "";
+                        double value = 0.0;
+                        while (isDestinationId != true) {
+                            System.out.println(res.getString("key40"));
+                            try {
+                                 destinationId = scan.next();
+                                AccountsModel account = con.readAccount(Integer.parseInt(destinationId));
+                                if (account != null) {
+                                    isDestinationId = true;
+                                } else if (destinationId.equals("0")) {
+                                    tellerPipeline(scan, res);
+                                } else {
+                                    System.out.println(res.getString("key6"));
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println(res.getString("key7"));
+                            }
+                        }
+
+                        while (isSenderId != true) {
+                            System.out.println(res.getString("key41"));
+                            try {
+                                senderId = scan.next();
+                                AccountsModel account = con.readAccount(Integer.parseInt(senderId));
+                                if (account != null) {
+                                    isSenderId = true;
+                                } else if (senderId.equals("0")) {
+                                    tellerPipeline(scan, res);
+                                } else {
+                                    System.out.println(res.getString("key6"));
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println(res.getString("key7"));
+                            }
+                        }
+                        System.out.println(res.getString("key42"));
+                        String details = scan.next();
+
+                        System.out.println(res.getString("key43"));
+                        while (isValue != true) {
+                            try {
+                                String stringValue = scan.next();
+                                if (stringValue.equals("0")) {
+                                    tellerPipeline(scan, res);
+                                } else {
+                                    value = Double.parseDouble(stringValue);
+                                    isValue = true;
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println(res.getString("key7"));
+                            }
+                        }
+                        if (!con.createTransaction(Integer.parseInt(destinationId), Integer.parseInt(senderId), details, value)) {
+                            System.out.println(res.getString("key44"));
+                            tellerPipeline(scan, res);
+                        }
+                        break;
+                    case 12:
+                        boolean isCId2 = false;
+                        System.out.println(res.getString("key9"));
+                        while (isCId2 != true) {
+                            try {
+                                String stringCId = scan.next();
+                                ClientsModel client = con.readClients(Integer.parseInt(stringCId));
+                                if (client != null) {
+                                    System.out.println(res.getString("key37"));
+                                    String updateIdentification = scan.next();
+                                    if (updateIdentification.equals("0")) {
+                                        tellerPipeline(scan, res);
+                                    } else {
+                                        con.updateClientIdentification(Integer.parseInt(stringCId), updateIdentification);
+                                        isCId2 = true;
+                                    }
+                                } else if (stringCId.equals("0")) {
+                                    tellerPipeline(scan, res);
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println(res.getString("key7"));
+                            }
+                        }
+                        System.out.println(res.getString("key48"));
+                        break;
+                    case 13:
+                        boolean isCId3 = false;
+                        System.out.println(res.getString("key9"));
+                        while (isCId3 != true) {
+                            try {
+                                String stringCId = scan.next();
+                                ClientsModel client = con.readClients(Integer.parseInt(stringCId));
+                                if (client != null) {
+                                    System.out.println(res.getString("key38"));
+                                    String updateAddress = scan.next();
+                                    if (updateAddress.equals("0")) {
+                                        tellerPipeline(scan, res);
+                                    } else {
+                                        con.updateClientIdentification(Integer.parseInt(stringCId), updateAddress);
+                                        isCId3 = true;
+                                    }
+                                } else if (stringCId.equals("0")) {
+                                    tellerPipeline(scan, res);
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println(res.getString("key7"));
+                            }
+                        }
+                        System.out.println(res.getString("key48"));
+                        break;
                     default:
+
                 }
             } catch (InputMismatchException ime) {
-                System.out.println("Invalid value. Please try again.");
-                scan.nextLine();
-            } // Handles SQLite exceptions such as not respecting the PK constraint
-            catch (org.sqlite.SQLiteException e) {
-                System.out.println(e.toString());
-                System.out.println("There was a Database Error. Please try again with different values");
+                System.out.println(res.getString("key30"));
                 scan.nextLine();
             }
         }
     }
 
-    public static void clientPipeline(Scanner scan) throws Exception {
+    public static void clientPipeline(Scanner scan, ResourceBundle res) throws Exception {
         BAMSController con = new BAMSController();
         boolean active = true;
-        System.out.println("Welcome to the Client system " + con.readClients(cId).getFirstName() + " .");
-        System.out.println("Here you'll find all the functions you may need.");
-        System.out.println("If at any point you want to return to the welcome menu, simply type '0' in the input field\n");
+        res =  Factory.getRes(i18nChoice);
+
+        System.out.println(res.getString("key25") + " " + con.readClients(cId).getFirstName() + ".");
+        System.out.println(res.getString("key11"));
+        System.out.println(res.getString("key12"));
         while (active) {
             try {
-                System.out.println("Please select a function (enter the corresponding number):");
-                System.out.println("\t1. Read Client ");
-                System.out.println("\t2. Read Client Transaction ");
-//                System.out.println("\t3. Read Single Transaction");
-                System.out.println("\t3. Read Account");
+                System.out.println(res.getString("key13"));
+                System.out.println("\t1. " + res.getString("key26"));
+                System.out.println("\t2. " + res.getString("key27"));
+                System.out.println("\t3. " + res.getString("key28"));
 
-                System.out.print("Select: ");
+                System.out.print(res.getString("key21"));
                 int selection = scan.nextInt();
                 System.out.println("");
 
                 switch (selection) {
                     case 0:
-                        menuPipeline(scan);
+                        menuPipeline(scan, res);
                         active = false;
                         break;
                     case 1:
@@ -275,12 +488,7 @@ public class Menu {
                     default:
                 }
             } catch (InputMismatchException ime) {
-                System.out.println("Invalid value. Please try again.");
-                scan.nextLine();
-            } // Handles SQLite exceptions such as not respecting the PK constraint
-            catch (org.sqlite.SQLiteException e) {
-                System.out.println(e.toString());
-                System.out.println("There was a Database Error. Please try again with different values");
+                System.out.println(res.getString("key30"));
                 scan.nextLine();
             }
         }

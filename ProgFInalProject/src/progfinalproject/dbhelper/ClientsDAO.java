@@ -62,7 +62,6 @@ public class ClientsDAO implements Clients{
             Connection con = BAMSDBConnection.getSingleBAMSCon();
             Statement stmt = con.createStatement();
             stmt.executeUpdate("UPDATE CLIENTS SET IDENTIFICATION='" + identification + "'" + "WHERE CLIENTID=" + id);
-            System.out.println("Update Successful!");
             return true;
         } catch (Exception e) {
             System.out.println("Error Connecting to the DB ["+e.getMessage()+"]");
