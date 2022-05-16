@@ -1,15 +1,20 @@
+/*
+ * Account DAO class that perform CRUD operations
+ */
 package progfinalproject.dbhelper;
 
 import progfinalproject.Interfaces.Accounts;
-import progfinalproject.models.ClientsModel;
 import progfinalproject.models.AccountsModel;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+/**
+ *
+ * @author Kosta Nikopoulos and Saqib Ahmad Syed
+ */
 
 public class AccountsDAO implements Accounts{
     public boolean createAccount(int cId, String accountType) {
@@ -66,16 +71,17 @@ public class AccountsDAO implements Accounts{
         try {
             Connection con = BAMSDBConnection.getSingleBAMSCon();
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT BALANCE, ISACTIVE FROM ACCOUNTS");
+            ResultSet rs = stmt.executeQuery("SELECT BALANCE, ISACTIVE FROM ACCOUNTS WHERE ACCOUNTID=" + id);
 
             if (rs.next()) {
                 double balance = rs.getDouble("BALANCE");
-                if (balance == 0.00) {
+                if (balance > 0.00) {
                     System.out.println("Cannot deactivate account with a balance of 0");
                     return false;
+                } else if (rs.getBoolean("ISACTIVE") == false){
+                    return false;
                 } else {
-                    stmt.executeUpdate("UPDATE ACCOUNTS SET ISACTIVE='FALSE'");
-                    System.out.println("successfuly deactivated");
+                    stmt.executeUpdate("UPDATE ACCOUNTS SET ISACTIVE=0 WHERE ACCOUNTID=" + id);
                     return true;
                 }
             } else {

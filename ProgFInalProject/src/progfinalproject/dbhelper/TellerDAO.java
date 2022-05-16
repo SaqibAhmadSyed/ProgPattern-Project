@@ -1,10 +1,16 @@
+/*
+ * Teller DAO class that perform CRUD operations
+ */
+
 package progfinalproject.dbhelper;
 
 import progfinalproject.models.TellerModel;
-
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+
+/**
+ *
+ * @author Kosta Nikopoulos and Saqib Ahmad Syed
+ */
 
 public class TellerDAO {
 

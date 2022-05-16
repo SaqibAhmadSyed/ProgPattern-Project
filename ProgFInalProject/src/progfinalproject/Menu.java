@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Main view clas to print everything out as well as take user inputs.
  */
 package progfinalproject;
 
@@ -10,74 +8,73 @@ import progfinalproject.models.AccountsModel;
 import progfinalproject.models.ClientsModel;
 import progfinalproject.models.TellerModel;
 
-import java.text.DateFormat;
 import java.util.*;
-
 
 /**
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 
+//Factory to create english or french resource bundle according to the users wish
 class Factory {
+    /**
+     * @param choice user input
+     * @return ressource bundle to use for all classes
+     */
     public static ResourceBundle I18N(String choice) {
         Locale locale = new Locale("", "");
         Scanner scan = new Scanner(System.in);
+        boolean isSelected = false;
 
         switch (choice) {
             case "1":
                 locale = new Locale("en", "US");
-                break;
+                isSelected = true;
             case "2":
                 locale = new Locale("fr", "FR");
-                break;
-            default:
-                System.out.println("select a valid choice.");
+                isSelected = true;
         }
         return ResourceBundle.getBundle("progfinalproject/MessagesBundle", locale);
     }
+
+    /**
+     * @param choice user input
+     * @return ressource bundle to be accessible for all class
+     */
     public static ResourceBundle getRes(String choice) {
         return I18N(choice);
     }
 }
 
+/**
+ * main class which prints everything out
+ */
 public class Menu {
 
     static String i18nChoice;
-    static int cId;
+    static int cId; //client id
 
     public static void main(String[] args) throws Exception {
         BAMSController controller = new BAMSController();
-        TellerModel teller = controller.getCredential();
+        TellerModel teller = controller.getCredential();//get username and password for teller
         Scanner scan = new Scanner(System.in);
 
         System.out.println("Select 1 for english or 2 for french.");
+
         i18nChoice = scan.next();
-        ResourceBundle res =  Factory.getRes(i18nChoice);
+        ResourceBundle res = Factory.getRes(i18nChoice);
 
         menuPipeline(scan, res);
     }
 
-//    public static ResourceBundle I18N(Scanner scan) {
-//        Locale locale = new Locale("", "");
-//
-//        System.out.println("Select 1 for english or 2 for french.");
-//        switch (scan.nextLine()) {
-//            case "1":
-//                locale = new Locale("en", "US");
-//                break;
-//            case "2":
-//                locale = new Locale("fr", "FR");
-//                break;
-//            default:
-//                System.out.println("select a valid choice.");
-//        }
-//        return ResourceBundle.getBundle("progfinalproject/MessagesBundle", locale);
-//    }
-
+    /**
+     * @param scan scanner
+     * @param res  ressource bundle from factory class
+     * @throws Exception
+     */
     public static void menuPipeline(Scanner scan, ResourceBundle res) throws Exception {
         BAMSController controller = new BAMSController();
 
-
+        //welcome message
         System.out.println(res.getString("key1"));
         System.out.println(res.getString("key2"));
         System.out.println(res.getString("key3"));
@@ -87,10 +84,11 @@ public class Menu {
         while (!validInput) {
             char input = scan.next().charAt(0);
 
+            //switch case between teller and client pipeline
             switch (Character.toUpperCase(input)) {
                 case 'T':
-                    boolean isId = false;
-                    boolean isPswd = false;
+                    boolean isId = false; // breaks loop if the id exists in the teller table
+                    boolean isPswd = false; // breaks loop if the password exists in the teller table
                     TellerModel teller = controller.getCredential();
 
                     System.out.println(res.getString("key5"));
@@ -100,12 +98,12 @@ public class Menu {
                             if (Integer.parseInt(stringId) == teller.getTellerId()) {
                                 isId = true;
                             } else if (stringId.equals("0")) {
-                                menuPipeline(scan, res);
+                                menuPipeline(scan, res); // returns to the main menu
                             } else {
                                 System.out.println(res.getString("key6"));
                             }
                         } catch (NumberFormatException e) {
-                            System.out.println(res.getString("key7"));
+                            System.out.println(res.getString("key7")); //user must input numbers to prevent catching errors
                         }
                     }
 
@@ -129,12 +127,14 @@ public class Menu {
                     while (isCId != true) {
                         try {
                             String stringCId = scan.next();
-                            ClientsModel client = controller.readClients(Integer.parseInt(stringCId));
+                            ClientsModel client = controller.readClients(Integer.parseInt(stringCId)); // reads client based on the inputed id
                             if (client != null) {
-                                cId = Integer.parseInt(stringCId);
+                                cId = Integer.parseInt(stringCId); //stores the inputted id from the client to use it in the client pipeline so that he can only view his own data
                                 isCId = true;
                             } else if (stringCId.equals("0")) {
                                 menuPipeline(scan, res);
+                            } else {
+                                System.out.println(res.getString("key6"));
                             }
                         } catch (NumberFormatException e) {
                             System.out.println(res.getString("key7"));
@@ -146,21 +146,26 @@ public class Menu {
                 case 'X':
                     System.exit(0);
                 default:
-                    System.out.println(res.getString("key30"));
+                    System.out.println(res.getString("key30")); //goes to default if user inputted wrongly
             }
         }
-
     }
 
+    /**
+     * main method for the teller pipeline. The user will be able to execute every method available to the teller here
+     *
+     * @param scan scanner
+     * @param res  ressource bundle from factory class
+     * @throws Exception
+     */
     public static void tellerPipeline(Scanner scan, ResourceBundle res) throws Exception {
         BAMSController con = new BAMSController();
-        res =  Factory.getRes(i18nChoice);
-        boolean active = true;
+        res = Factory.getRes(i18nChoice);
 
         System.out.println(res.getString("key10"));
         System.out.println(res.getString("key11"));
         System.out.println(res.getString("key12"));
-        while (active) {
+        while (true) {
             try {
                 System.out.println(res.getString("key13"));
                 System.out.println("\t1. " + res.getString("key14"));
@@ -179,10 +184,11 @@ public class Menu {
                 System.out.print(res.getString("key21"));
                 int selection = scan.nextInt();
 
+                // user input which allows the user to select between admin operations
                 switch (selection) {
                     case 0:
                         menuPipeline(scan, res);
-                        active = false;
+                        break;
                     case 1:
                         con.fetchAllClients();
                         break;
@@ -220,7 +226,7 @@ public class Menu {
                                 if (con.readClients(Integer.parseInt(stringCId)) != null) {
                                     System.out.println(con.readClients(Integer.parseInt(stringCId)));
                                     isCId = true;
-                                } else if (stringCId.equals("0")){
+                                } else if (stringCId.equals("0")) {
                                     tellerPipeline(scan, res);
                                 } else {
                                     System.out.println(res.getString("key6"));
@@ -256,10 +262,11 @@ public class Menu {
                             try {
                                 String stringTrId = scan.next();
                                 if (con.readAccount(Integer.parseInt(stringTrId)) != null) {
-                                    System.out.println(con.readClientTransaction(Integer.parseInt(stringTrId)));
+                                    con.readClientTransaction(Integer.parseInt(stringTrId));
                                     isTrId = true;
                                 } else if (stringTrId.equals("0")) {
-                                    tellerPipeline(scan, res);tellerPipeline(scan, res);
+                                    tellerPipeline(scan, res);
+                                    tellerPipeline(scan, res);
                                 } else {
                                     System.out.println(res.getString("key6"));
                                 }
@@ -275,10 +282,18 @@ public class Menu {
                             try {
                                 String stringAccId = scan.next();
                                 if (con.readAccount(Integer.parseInt(stringAccId)) != null) {
-                                    System.out.println(con.deactivateAccount(Integer.parseInt(stringAccId)));
-                                    isAccId = true;
+                                    if (!con.deactivateAccount(Integer.parseInt(stringAccId))) {
+                                        System.out.println(res.getString("key49"));
+                                        tellerPipeline(scan, res);
+                                    } else {
+                                        con.deactivateAccount(Integer.parseInt(stringAccId));
+                                        System.out.println(res.getString("key50"));
+                                        isAccId = true;
+                                    }
+
                                 } else if (stringAccId.equals("0")) {
-                                    tellerPipeline(scan, res);tellerPipeline(scan, res);
+                                    tellerPipeline(scan, res);
+                                    tellerPipeline(scan, res);
                                 } else {
                                     System.out.println(res.getString("key6"));
                                 }
@@ -294,7 +309,7 @@ public class Menu {
                         String lName = scan.next();
                         System.out.print(res.getString("key37") + " ");
                         String identification = scan.next();
-                        System.out.println(res.getString("key38") + " ");
+                        System.out.print(res.getString("key38") + " ");
                         String address = scan.next();
                         con.createClient(fName, lName, identification, address);
                         break;
@@ -309,6 +324,7 @@ public class Menu {
                                     System.out.println(res.getString("key39") + " ");
                                     while (isClientCreated != true) {
                                         String accType = scan.next().toLowerCase();
+                                        //checks user input if its checking or saving. Otherwise, the user won't be able to input an account type
                                         if (accType.equals("checking") || accType.equals("savings")) {
                                             con.createAccount(Integer.parseInt(clientId), accType);
                                             isClientCreated = true;
@@ -340,7 +356,7 @@ public class Menu {
                         while (isDestinationId != true) {
                             System.out.println(res.getString("key40"));
                             try {
-                                 destinationId = scan.next();
+                                destinationId = scan.next();
                                 AccountsModel account = con.readAccount(Integer.parseInt(destinationId));
                                 if (account != null) {
                                     isDestinationId = true;
@@ -387,6 +403,7 @@ public class Menu {
                                 System.out.println(res.getString("key7"));
                             }
                         }
+                        //if there is an error creating transactions, returns to the teller menu
                         if (!con.createTransaction(Integer.parseInt(destinationId), Integer.parseInt(senderId), details, value)) {
                             System.out.println(res.getString("key44"));
                             tellerPipeline(scan, res);
@@ -419,13 +436,13 @@ public class Menu {
                         break;
                     case 13:
                         boolean isCId3 = false;
-                        System.out.println(res.getString("key9"));
+                        System.out.print(res.getString("key9"));
                         while (isCId3 != true) {
                             try {
                                 String stringCId = scan.next();
                                 ClientsModel client = con.readClients(Integer.parseInt(stringCId));
                                 if (client != null) {
-                                    System.out.println(res.getString("key38"));
+                                    System.out.print(res.getString("key38"));
                                     String updateAddress = scan.next();
                                     if (updateAddress.equals("0")) {
                                         tellerPipeline(scan, res);
@@ -443,7 +460,6 @@ public class Menu {
                         System.out.println(res.getString("key48"));
                         break;
                     default:
-
                 }
             } catch (InputMismatchException ime) {
                 System.out.println(res.getString("key30"));
@@ -452,11 +468,18 @@ public class Menu {
         }
     }
 
+    /**
+     * main method for the client pipeline. After entering client id, the user will be able to view his/her informations
+     *
+     * @param scan scanner
+     * @param res  ressource bundle from the factory class
+     * @throws Exception
+     */
     public static void clientPipeline(Scanner scan, ResourceBundle res) throws Exception {
         BAMSController con = new BAMSController();
         boolean active = true;
-        res =  Factory.getRes(i18nChoice);
-
+        res = Factory.getRes(i18nChoice);
+        //prints name of the client
         System.out.println(res.getString("key25") + " " + con.readClients(cId).getFirstName() + ".");
         System.out.println(res.getString("key11"));
         System.out.println(res.getString("key12"));

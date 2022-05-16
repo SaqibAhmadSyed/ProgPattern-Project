@@ -1,4 +1,6 @@
-
+/*
+ * Client DAO class that perform CRUD operations
+ */
 package progfinalproject.dbhelper;
 
 import progfinalproject.Interfaces.Clients;

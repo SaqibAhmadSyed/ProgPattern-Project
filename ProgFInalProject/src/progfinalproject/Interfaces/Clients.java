@@ -1,8 +1,9 @@
+/*
+ * blueprint for the Client DAO. Only those methods can be implemented
+ */
 package progfinalproject.Interfaces;
 
 import java.util.List;
-import java.util.Map;
-
 import progfinalproject.models.ClientsModel;
 
 public interface Clients {

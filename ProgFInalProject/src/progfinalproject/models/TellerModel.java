@@ -1,10 +1,7 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Teller model which converts database value into java values
  */
 package progfinalproject.models;
-
 /**
  *
  * @author Kosta Nikopoulos and Saqib Ahmad Syed

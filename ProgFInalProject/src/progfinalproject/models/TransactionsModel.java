@@ -1,6 +1,8 @@
+/*
+ * Transactions model which converts database value into java values
+ */
 
 package progfinalproject.models;
-
 /**
  *
  * @author Kosta Nikopoulos and Saqib Ahmad Syed

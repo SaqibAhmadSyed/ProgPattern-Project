@@ -1,9 +1,10 @@
+/*
+ * blueprint for the transactions DAO. Only those methods can be implemented
+ */
 package progfinalproject.Interfaces;
 
 import progfinalproject.models.TransactionsModel;
-
 import java.util.List;
-import java.util.Map;
 
 public interface Transaction {
 

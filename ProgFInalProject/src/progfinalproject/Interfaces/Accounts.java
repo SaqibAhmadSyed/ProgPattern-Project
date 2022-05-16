@@ -1,7 +1,9 @@
+/*
+ * blueprint for the account DAO. Only those methods can be implemented
+ */
 package progfinalproject.Interfaces;
 
 import progfinalproject.models.AccountsModel;
-
 import java.util.List;
 
 public interface Accounts {

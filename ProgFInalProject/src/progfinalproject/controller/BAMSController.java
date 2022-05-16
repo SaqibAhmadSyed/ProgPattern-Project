@@ -1,11 +1,11 @@
-
+/*
+ * Main controller class which takes every method from the DAO's and puts in the controller so that it can be accessed in the view method
+ */
 package progfinalproject.controller;
 
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.List;
-
-import progfinalproject.Interfaces.Accounts;
 import progfinalproject.dbhelper.*;
 import progfinalproject.models.AccountsModel;
 import progfinalproject.models.ClientsModel;
@@ -18,8 +18,7 @@ import progfinalproject.models.TransactionsModel;
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
  */
 public class BAMSController {
-    int index = -1;
-    Connection con;
+//    Connection con;
     List<ClientsModel> clients;
     List<TransactionsModel> transactions;
     List<AccountsModel> accounts;
@@ -30,9 +29,6 @@ public class BAMSController {
     TransactionDAO tDAO = new TransactionDAO();
     TellerDAO tellerDAO = new TellerDAO();
 
-
-    public BAMSController() {
-    }
     /**
      * Creates the Clients table
      * @throws Exception creates exception message if database failed to be created

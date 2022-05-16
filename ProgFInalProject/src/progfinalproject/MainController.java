@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * s
  */
 package progfinalproject;
 
@@ -36,9 +34,9 @@ public class MainController {
         ClientsDAO cDAO = new ClientsDAO();
         AccountsDAO a = new AccountsDAO();
         TransactionDAO t = new TransactionDAO();
-//        controller.createClientsTable();
-//        controller.createAccountsTable();
-//        controller.createTransactionsTable();
+        controller.createClientsTable();
+        controller.createAccountsTable();
+        controller.createTransactionsTable();
 //        createTellerTable();
 //
 //        cDAO.createClient("xesus", "christ", "goated", "no adress");

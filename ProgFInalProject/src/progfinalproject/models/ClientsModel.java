@@ -1,10 +1,8 @@
-
+/*
+ * Client model which converts database value into java values
+ */
 package progfinalproject.models;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import progfinalproject.Interfaces.Clients;
 /**
  *
  * @author Kosta Nikopoulos and Saqib Ahmad Syed
